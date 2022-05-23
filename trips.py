@@ -5,12 +5,19 @@ import csv
 import os
 
 class Trip:
-    trip_count = 0 
-    def __init__(self, name, start_date,  duration,):
+    with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
+        read_csv = csv.reader(f)
+        header = next(read_csv)
+        trips = list(read_csv)
+
+    trip_count = len(trips) or 0
+
+    def __init__(self, name, start_date, conact_numer = 3337140,  duration= "one_day"):
         Trip.trip_count += 1
         self.id = Trip.trip_count
         self.name = name
         self.start_date = start_date
+        self.contact_numer = conact_numer
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
@@ -26,20 +33,20 @@ class Trip:
             print(f" Invalid duration: {duration}")
         
         self.duration = duration
-
-    def writeTripData(self):     
-        header = ['id', 'name', 'start_date','travellers', 'trip_legs', 'support_staff']
+     
+        header = ['id', 'name', 'start_date', 'contact_numer', 'duration', 'travellers', 'trip_legs', 'support_staff']
 
         if os.path.isfile('data/trips.csv'):
-            with open('data/camps.csv', 'a', newline='', encoding='utf-8') as f:
+    
+            with open('data/trips.csv', 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow([self.id, self.name, self.start_date, self.travellers, self.trip_legs, self.support_staff])
+                writer.writerow([self.id, self.name, self.start_date, self.contact_numer ,self.duration,self.travellers, self.trip_legs, self.support_staff])
 
         else:
             with open('data/trips.csv', 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerow(header)
-                writer.writerow([self.id, self.name, self.start_date, self.travellers, self.trip_legs, self.support_staff])
+                writer.writerow([self.id, self.name, self.start_date, self.contact_numer ,self.duration,self.travellers, self.trip_legs, self.support_staff])
 
 
     def __repr__(self) -> str:
@@ -56,12 +63,44 @@ class Trip:
         new_traveller = Traveller(name, address,  birth_date, emr_contact)
         self.travellers.append(new_traveller)
 
-    def view_traverllers(self):
+
+    def return_traverllers(self):
         if self.travellers:
-            for traveller in self.travellers:
-                print(traveller.name)
-        else:
-            print("None")
+            return self.travellers
+        else: 
+            return False
+    # @staticmethod
+    # def return_traverllers(id):
+    #     if os.path.isfile('data/trips.csv'):
+    #         with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
+    #             read_csv = csv.reader(f)
+    #             header = next(read_csv)
+    #             trips = list(read_csv)
+    #             for trip in trips:
+    #                 if id == int(trip[0]):
+    #                     return trip[3]
+    #             return False
+
+    @staticmethod
+    def return_trips(id):
+        if os.path.isfile('data/trips.csv'):
+            with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
+                read_csv = csv.reader(f)
+                header = next(read_csv)
+                trips = list(read_csv)
+                if trips:
+                    return trips
+                
+                else:
+                    return False
+
+
+
+
+# newTrip = Trip("park2", '24/85/2022', "weekend")
+
+# print(newTrip.return_traverllers(1))
+
 
 
 
