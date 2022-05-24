@@ -17,6 +17,11 @@ class IDType(Enum):
    driving_license = 2
    national_id =  3
 
+class UserRole(Enum):
+   coodinator = 1
+   manager = 2
+   admin =  3
+
 
 
 

@@ -8,26 +8,27 @@ from trips import Trip
 
 class Trips(Tk):
 
-    def __init__(self):
+    def __init__(self, system):
         super().__init__()
+        self.system = system
         # set window attributes
         self.title("Trips")
         self.geometry("500x600")
         self.resizable(0, 0)
         self.columnconfigure(0, weight= 1)
         self.columnconfigure(1, weight= 3)
-        
+        self.crete_trip_label = Label(text="Create New Trip", bg="#20bebe")
+        self.crete_trip_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
+
         # add components
         col =0
-        row = 0
-
-        
-
+        row = 1
 
         self.name_label = Label(self, text="Name:")
         self.name_label.grid(column=col, row=row, sticky=E, padx=5, pady=10)
         self.name_var= StringVar()
         self.name_entry = Entry(self, textvariable = self.name_var)
+        # self.name_var.set(self.system.trips[0])
         self.name_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10)     
            
         self.date_label = Label(self, text="Start Date:")
@@ -45,12 +46,12 @@ class Trips(Tk):
 
         def save_form():
             name = self.name_entry.get()
-            date = self.date_var.get()
+            date = self.date_entry.get()
             dur = self.dur_entry.get()
             print(name, date, dur)
-            # new_trip = Trip(name, date, dur)
-
-            # print("Tkinter is easy to use!")
+            new_trip = Trip(name, date, dur)
+            self.system.trips.append(new_trip)
+            print(self.system.trips)
 
         self.submit_text= StringVar()
         self.submit_btn = Button(self, command= save_form ,textvariable= self.submit_text, bg = "#20bebe")
@@ -63,6 +64,3 @@ class Trips(Tk):
         # self.date_entry.insert("Date Format")    
 
 
-if __name__ == "__main__":
-    gui = Trips()
-    gui.mainloop()

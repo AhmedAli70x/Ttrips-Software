@@ -1,17 +1,12 @@
 
 
+from pprint import pprint
 from enums import IDType, TripDuration, TransportMode
 import csv
 import os
 
 class Trip:
-    with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
-        read_csv = csv.reader(f)
-        header = next(read_csv)
-        trips = list(read_csv)
-
-    trip_count = len(trips) or 0
-
+    trip_count =  0
     def __init__(self, name, start_date, conact_numer = 3337140,  duration= "one_day"):
         Trip.trip_count += 1
         self.id = Trip.trip_count
@@ -21,11 +16,9 @@ class Trip:
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
-
-            
         for dur in TripDuration:
             if dur.name == duration:
-                duration = dur.value
+                duration = dur.name
                 self.duration = duration
                 break
             
@@ -33,21 +26,6 @@ class Trip:
             print(f" Invalid duration: {duration}")
         
         self.duration = duration
-     
-        header = ['id', 'name', 'start_date', 'contact_numer', 'duration', 'travellers', 'trip_legs', 'support_staff']
-
-        if os.path.isfile('data/trips.csv'):
-    
-            with open('data/trips.csv', 'a', newline='', encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer.writerow([self.id, self.name, self.start_date, self.contact_numer ,self.duration,self.travellers, self.trip_legs, self.support_staff])
-
-        else:
-            with open('data/trips.csv', 'w', newline='', encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer.writerow(header)
-                writer.writerow([self.id, self.name, self.start_date, self.contact_numer ,self.duration,self.travellers, self.trip_legs, self.support_staff])
-
 
     def __repr__(self) -> str:
         return f"(Name {self.name}, Start Date {self.start_date})"
@@ -69,6 +47,45 @@ class Trip:
             return self.travellers
         else: 
             return False
+
+
+    def view_travellers(self):
+        if self.travellers:
+            for traveller in self.travellers:
+                print(traveller[0])
+            return self.travellers
+        else:
+            print("No Travellers Found")
+            return False
+
+    def del_traveller(self, id):
+        if self.travellers:
+            for traveller in self.travellers:
+                if traveller[0] == id:
+                    self.travellers.remove(traveller)
+                    print(f"Traveller rmoved")
+                    return True
+            
+            print("Not Found")
+            return False
+        else:
+            print("No Travellers")
+            return False
+
+    
+    # def add_traveller_id(self, traveller_id, type, numer):
+    #     if self.travellers:
+    #         for traveller in self.travellers:
+    #             if traveller[0] == traveller_id:
+    #                 new_id = ID(type,numer)
+            
+    #         print("Not Found")
+    #         return False
+    #     else:
+    #         print("No Travellers")
+    #         return False
+
+
     # @staticmethod
     # def return_traverllers(id):
     #     if os.path.isfile('data/trips.csv'):
@@ -95,13 +112,9 @@ class Trip:
                     return False
 
 
-
-
 # newTrip = Trip("park2", '24/85/2022', "weekend")
 
 # print(newTrip.return_traverllers(1))
-
-
 
 
 
@@ -118,11 +131,12 @@ class TripLeg:
 
         for vehicl in TransportMode:
             if vehicl.name == transport_mode:
-                transport_mode = vehicl.value
+                transport_mode = vehicl.name
                 self.transport_mode = transport_mode
                 break
         
-            self.transport_mode = None
+            else:
+                self.transport_mode = None
             # print(f" Invalid transport mode: {transport_mode}")
         
         
@@ -175,7 +189,7 @@ class ID:
         self.number = number
         for id in IDType:
             if id.name == type:
-                type = id.value
+                type = id.name
                 self.id_type = type
                 break
         
@@ -189,15 +203,15 @@ class ID:
         return f"(ID Type is {self.id_type}, ID Number is {self.number})"
 
 
+#testing
 
-
-passport = ID("national_id", 123456)
+# passport = ID("national_id", 123456)
 # print(passport.id_type)
 
 
-trip_leg_1 = TripLeg("Solent", "park")
+# trip_leg_1 = TripLeg("Solent", "park")
 
-trip_leg_1.add_point_of_interest(['library'])
+# trip_leg_1.add_point_of_interest(['library'])
 
-trip_leg_1.view_point_of_interests()
+# trip_leg_1.view_point_of_interests()
 
