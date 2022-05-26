@@ -72,31 +72,7 @@ class Trip:
             print("No Travellers")
             return False
 
-    
-    # def add_traveller_id(self, traveller_id, type, numer):
-    #     if self.travellers:
-    #         for traveller in self.travellers:
-    #             if traveller[0] == traveller_id:
-    #                 new_id = ID(type,numer)
-            
-    #         print("Not Found")
-    #         return False
-    #     else:
-    #         print("No Travellers")
-    #         return False
 
-
-    # @staticmethod
-    # def return_traverllers(id):
-    #     if os.path.isfile('data/trips.csv'):
-    #         with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
-    #             read_csv = csv.reader(f)
-    #             header = next(read_csv)
-    #             trips = list(read_csv)
-    #             for trip in trips:
-    #                 if id == int(trip[0]):
-    #                     return trip[3]
-    #             return False
 
     @staticmethod
     def return_trips(id):
