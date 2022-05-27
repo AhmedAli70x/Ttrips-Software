@@ -7,12 +7,12 @@ import os
 
 class Trip:
     trip_count =  0
-    def __init__(self, name, start_date, conact_numer = 3337140,  duration= "one_day"):
+    def __init__(self, name, start_date, contact_numer = 3337140,  duration= "one_day"):
         Trip.trip_count += 1
         self.id = Trip.trip_count
         self.name = name
         self.start_date = start_date
-        self.contact_numer = conact_numer
+        self.contact_numer = contact_numer
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
@@ -41,13 +41,13 @@ class Trip:
         new_traveller = Traveller(name, address,  birth_date, emr_contact)
         self.travellers.append(new_traveller)
 
-
-    def return_traverllers(self):
+    def view_traverllers(self):
         if self.travellers:
+            for traveller in self.travellers:
+                print(traveller.name)
             return self.travellers
         else: 
             return False
-
 
     def view_travellers(self):
         if self.travellers:
@@ -64,15 +64,12 @@ class Trip:
                 if traveller[0] == id:
                     self.travellers.remove(traveller)
                     print(f"Traveller rmoved")
-                    return True
-            
+                    return True      
             print("Not Found")
             return False
         else:
             print("No Travellers")
             return False
-
-
 
     @staticmethod
     def return_trips(id):
@@ -87,22 +84,15 @@ class Trip:
                 else:
                     return False
 
-
-# newTrip = Trip("park2", '24/85/2022', "weekend")
-
-# print(newTrip.return_traverllers(1))
-
-
-
 class TripLeg:
     trip_leg_count = 0
 
-    def __init__(self, starting_location, destination,points_of_interests= [],  transport_provider=None, transport_mode=None):
+    def __init__(self, starting_location, destination, point_of_interest,  transport_provider=None, transport_mode=None):
         TripLeg.trip_leg_count +=1
         self.trip_leg_id = TripLeg.trip_leg_count
         self.starting_location = starting_location
         self.destination = destination
-        self.points_of_interests = points_of_interests
+        self.point_of_interest = point_of_interest
         self.transport_provider = transport_provider
 
         for vehicl in TransportMode:
@@ -153,14 +143,14 @@ class Traveller:
         return f"Traveller name is {self.name}"
 
     def add_id(self, type, number):
-        new_id = ID(type, number)
+        new_id = Passport(type, number)
         self.gov_ids.append(new_id)
     
     def view_id(self):
         for id in self.gov_ids:
             print(id)
                
-class ID:
+class Passport:
     def __init__(self, type, number):
         self.number = number
         for id in IDType:

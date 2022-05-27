@@ -6,16 +6,20 @@ from tkinter import ttk
 
 
 
-from tkTrips import Trips
-from tkMain import MainMenu
-from tkCreateTraveller import CreateTraveller
+from tk_trips import Trips
+from tk_main import MainMenu
+from tk_create_traveller import CreateTraveller
 from trips import Traveller, Trip
 
 class System: 
- 
     def __init__(self) -> None:
         self.trips = []
-        self.users = ['user1', 'user2', 'user3']
+        self.users = []
+        self.log_user =None
+
+    def login(self, username, password ):
+        self.username =username
+        password = password
 
     def search_trip(self, id):
         if self.trips:
@@ -25,6 +29,10 @@ class System:
         messagebox.showinfo(title="TRIP ERROR", message="Trip Not Found",)
         return False
 
+
+    def refresh(self):
+        self.destroy()
+        self.__init__()
 
 trip1 = Trip("Trip1",'10/06/2021')
 trip1.create_traveller("traveller1", "address1",'22/10/99','4447140')

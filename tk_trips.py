@@ -45,13 +45,17 @@ class Trips(Tk):
         self.dur_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10)  
 
         def save_form():
-            name = self.name_entry.get()
-            date = self.date_entry.get()
-            dur = self.dur_entry.get()
-            print(name, date, dur)
-            new_trip = Trip(name, date, dur)
-            self.system.trips.append(new_trip)
-            print(self.system.trips)
+            try:
+                name = self.name_entry.get()
+                date = self.date_entry.get()
+                dur = self.dur_entry.get()
+                # print(name, date, dur)
+                new_trip = Trip(name, date, dur)
+                self.system.trips.append(new_trip)
+                # print(self.system.trips)
+            except:
+                messagebox.showerror(title="Error", message="Failed to create Trip")
+
 
         self.submit_text= StringVar()
         self.submit_btn = Button(self, command= save_form ,textvariable= self.submit_text, bg = "#20bebe")

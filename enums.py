@@ -9,7 +9,7 @@ class TransportMode(Enum):
    plan = 1
    ferry = 2
    coach = 3
-   taxt = 4
+   taxi = 4
 
 
 class IDType(Enum):

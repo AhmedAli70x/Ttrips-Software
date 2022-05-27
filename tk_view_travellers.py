@@ -3,16 +3,16 @@ from tkinter import *
 from tkinter import messagebox
 
 from tkinter import ttk
-from tkUpdateTraveller import UpdateTraveller
+from tk_update_traveller import UpdateTraveller
 from trips import Trip, Traveller
 
 
 class ViewTravellers(Tk):
 
-    def __init__(self, system, trip_id):
+    def __init__(self, travellers):
         super().__init__()
-        self.system = system
-        self.id = trip_id 
+        self.travellers = travellers
+   
         self.title("View Travellers")
         self.geometry("700x600")
         self.configure(bg='white')
@@ -21,10 +21,11 @@ class ViewTravellers(Tk):
         self.view_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 
 
-
         def update_traveller(traveller_id):
+            self.destroy()
             print(f"Update traveller {id}") 
-            update_traveller = UpdateTraveller(self.system, self.id, traveller_id)
+            self.traveller = self.travellers[traveller_id]
+            update_traveller = UpdateTraveller(self.traveller)
             update_traveller.mainloop()
         # add components
         col =0
@@ -43,13 +44,20 @@ class ViewTravellers(Tk):
         self.tra_ID_num_label = Label(self, text="ID Number")
         self.tra_ID_num_label.grid(column=col+5, row=row, sticky=W, padx=5, pady=10)
 
-        buttons = []
-        buttons2 = []
-        buttons3 = []
+        
+        def delete_traveller(traveller_id):
+            
+            self.travellers.pop(traveller_id)
+            messagebox.showinfo(title="Success", message="Traveller Deleted Successfully",)
+
+            self.destroy()
+            self.__init__(self.travellers)
+
+        
         #Check if the trip has travellers, 4th element is the travellers list
-        if self.system.trips[self.id].travellers:
-            travellers_number = len(self.system.trips[self.id].travellers)
-            travellers = self.system.trips[self.id].travellers
+        if self.travellers:
+            travellers_number = len(self.travellers)
+            travellers = self.travellers
             for i in range(travellers_number):
 
                 traveller_name = travellers[i].name
@@ -87,17 +95,16 @@ class ViewTravellers(Tk):
                     ID_number_label.grid(column=5, row=row+1+i, sticky=W, padx=10, pady=10)
                     
                     
-                buttons.append(Button(self, command=lambda: update_traveller(i) ,text='Update Traveller', bg = '#20bebe'))
-                buttons[i].grid(column=6, row=row+1+i, sticky=W, padx=5, pady=10)
+                update_btn = Button(self, command=lambda: update_traveller(i) ,text='Update Traveller', bg = '#20bebe')
+                update_btn.grid(column=6, row=row+1+i, sticky=W, padx=5, pady=10)
 
-                # buttons2.append(Button(self, command=lambda: create_trip_leg(i) ,text='Add Trip Leg', bg = '#20bebe'))
-                # buttons2[i].grid(column=col+4, row=row+6+i, sticky=W, padx=5, pady=10)
+                delet_btn = Button(self, command=lambda: delete_traveller(i) ,text='Delete Traveller', bg = 'red')
+                delet_btn.grid(column=col+7, row=row+1+i, sticky=W, padx=5, pady=10)
 
-                # buttons3.append(Button(self.view_trips, command=lambda: view_travellers(i) ,text='View Travellers', bg = '#20bebe'))
-                # buttons3[i].grid(column=col+5, row=row+6+i, sticky=W, padx=5, pady=10)
             
 
         else:
+            self.destroy()
             messagebox.showinfo(title="No Travellers", message="No Travellers to display",)
 
 

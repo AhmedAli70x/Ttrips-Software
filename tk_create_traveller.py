@@ -64,24 +64,28 @@ class CreateTraveller(Tk):
         self.ID_num_entry.grid(column=col+1, row=row+5, sticky=W, pady=10)  
 
         def save_traveller():
-            name = self.name_entry.get()
-            address = self.address_entry.get()
-            birth_date = self.birth_date_entry.get()
-            emr_contact = self.emr_contact_entry.get()
-            ID_type = self.ID_entry.get()
-            ID_num = self.ID_num_entry.get()
-            # print(self.system.trips)
-            check_trip = self.system.search_trip(self.id)
-            print('Check trip result is',check_trip)
+            try:
+                name = self.name_entry.get()
+                address = self.address_entry.get()
+                birth_date = self.birth_date_entry.get()
+                emr_contact = self.emr_contact_entry.get()
+                ID_type = self.ID_entry.get()
+                ID_num = self.ID_num_entry.get()
 
-            if check_trip == 0 or check_trip > 0 :
-                new_traveller = Traveller(name, address, birth_date, emr_contact)
-                new_traveller.add_id(ID_type, ID_num)
-                self.system.trips[check_trip].travellers.append(new_traveller)
-                messagebox.showinfo(title="Traveller Created", message="Traveller Created")
+                check_trip = self.system.search_trip(self.id)
+                print('Check trip result is',check_trip)
 
-                print(self.system.trips[0])
+                if check_trip == 0 or check_trip > 0 :
+                    new_traveller = Traveller(name, address, birth_date, emr_contact)
+                    new_traveller.add_id(ID_type, ID_num)
+                    self.system.trips[check_trip].travellers.append(new_traveller)
+                    messagebox.showinfo(title="Traveller Created", message="Traveller Created")
 
+                    print(self.system.trips[0])
+                self.destroy()
+            except:
+                messagebox.showerror(title="Error", message="Failed to create traveller")
+                self.system.refresh()
                 
             # print(name,address,birth_date,emr_contact,ID_type,ID_num )
 
@@ -89,7 +93,7 @@ class CreateTraveller(Tk):
         self.save_tra_btn = Button(self, command= save_traveller ,text="Submit", bg = "#20bebe")
         self.save_tra_btn.grid(column=col+1, row=row+6, sticky=W, padx=5, pady=10)  
 
-  
+    
         
 
         # self.date_entry.insert("Date Format")    
