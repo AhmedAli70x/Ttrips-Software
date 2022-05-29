@@ -4,7 +4,6 @@ from tkinter import ttk
 import traceback
 from tkinter import messagebox
 
-from tk_main import MainMenu
 
 class UpdateTrip(Tk):
     def __init__(self, trip):
@@ -50,7 +49,20 @@ class UpdateTrip(Tk):
         self.dur_var = StringVar(self, value=self.trip.duration)
         self.dur_entry = ttk.Combobox(self, textvariable=self.dur_var, values=["one_day", "weekend", "fortnight"])
         self.dur_entry.current(0)
-        self.dur_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10)  
+        self.dur_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10) 
+
+        self.contact_label = Label(self, text="Contact:")
+        self.contact_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
+        self.contact_var= StringVar(self, value=self.trip.contact_numer)
+        self.contact_entry = Entry(self, textvariable = self.contact_var)
+        self.contact_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
+
+        self.support_label = Label(self, text="Support Staff:")
+        self.support_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
+        self.support_var= StringVar(self, value=self.trip.contact_numer)
+        self.suppot_entry = Entry(self, textvariable = self.support_var)
+        self.suppot_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
 
         self.submit_btn = Button(self, command= update_trip ,text= "Save", bg = "#20bebe")
-        self.submit_btn.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10) 
+        self.submit_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
+        

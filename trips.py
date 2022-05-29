@@ -7,7 +7,7 @@ import os
 
 class Trip:
     trip_count =  0
-    def __init__(self, name, start_date, contact_numer = 3337140,  duration= "one_day"):
+    def __init__(self, name, start_date, contact_numer = 999999,  duration= "one_day"):
         Trip.trip_count += 1
         self.id = Trip.trip_count
         self.name = name
@@ -16,16 +16,21 @@ class Trip:
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
+        
+    
+
         for dur in TripDuration:
             if dur.name == duration:
-                duration = dur.name
                 self.duration = duration
                 break
             
             self.duration = None
-            print(f" Invalid duration: {duration}")
+        print(f" Duration is: {self.duration}")
+ 
         
-        self.duration = duration
+    @property
+    def support_staff_num(self):
+        return round(len(self.travellers)/10)
 
     def __repr__(self) -> str:
         return f"(Name {self.name}, Start Date {self.start_date})"
@@ -33,13 +38,21 @@ class Trip:
     def __str__(self) -> str:
         return f"The trip name is {self.name}, start date at: {self.start_date}"
     
-    def create_trip_leg(self, start, destination, points_of_interests=[], transport_provider=None, transport_mode=None):
-        new_trip_leg = TripLeg(start, destination, points_of_interests, transport_provider, transport_mode)
-        self.trip_legs.append(new_trip_leg)
+    def create_trip_leg(self, start, destination, point_of_interest, transport_provider=None, transport_mode=None):
+        try:
+            new_trip_leg = TripLeg(start, destination, point_of_interest, transport_provider, transport_mode)
+            self.trip_legs.append(new_trip_leg)
+            return True
+        except:
+            return False
 
     def create_traveller(self, name, address=None,  birth_date=None, emr_contact = None ):
-        new_traveller = Traveller(name, address,  birth_date, emr_contact)
-        self.travellers.append(new_traveller)
+        try:
+            new_traveller = Traveller(name, address,  birth_date, emr_contact)
+            self.travellers.append(new_traveller)
+            return True
+        except:
+            return False
 
     def view_traverllers(self):
         if self.travellers:
@@ -70,19 +83,15 @@ class Trip:
         else:
             print("No Travellers")
             return False
+    
+    def add_support_staff(self, support_staff):
+        if  len(self.support_staff) < self.support_staff_num:
+            self.support_staff.append(support_staff)
+            return True
+        else:
+            print("Cannot add support staff")
+            return False
 
-    @staticmethod
-    def return_trips(id):
-        if os.path.isfile('data/trips.csv'):
-            with open('data/trips.csv', 'r', newline='', encoding='utf-8') as f:
-                read_csv = csv.reader(f)
-                header = next(read_csv)
-                trips = list(read_csv)
-                if trips:
-                    return trips
-                
-                else:
-                    return False
 
 class TripLeg:
     trip_leg_count = 0
@@ -151,7 +160,10 @@ class Traveller:
             print(id)
                
 class Passport:
-    def __init__(self, type, number):
+    def __init__(self, type, number, fullname=None, expirary_date=None, country=None):
+        self.full_name = fullname
+        self.expirary_date = expirary_date
+        self.country = country
         self.number = number
         for id in IDType:
             if id.name == type:
