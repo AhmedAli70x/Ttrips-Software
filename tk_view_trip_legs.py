@@ -3,9 +3,8 @@ from tkinter import *
 from tkinter import messagebox
 
 from tkinter import ttk
-from tk_update_traveller import UpdateTraveller
 from trips import Trip, Traveller
-
+from tk_update_trip_leg import UpdateTripLeg
 
 class ViewTripLegs(Tk):
 
@@ -22,11 +21,10 @@ class ViewTripLegs(Tk):
 
 
 
-        def update_trip_leg(trip_leg_id):
+        def update_trip_leg(trip_leg):
             self.destroy()
-            print(f"Update  {trip_leg_id}") 
-            self.trip_leg = self.trip_legs[trip_leg_id]
-            update_traveller = UpdateTripLeg(self.trip_leg)
+            # print(f"Update  {trip_leg}") 
+            update_traveller = UpdateTripLeg(trip_leg)
             update_traveller.mainloop()
 
 
@@ -56,7 +54,6 @@ class ViewTripLegs(Tk):
         buttonDictionary = {}
         #Check if the trip has travellers, 4th element is the travellers list
         if self.trip_legs:
-            num_trip_legs = len(self.trip_legs)
             
             for i, trip_leg in enumerate(self.trip_legs):
 
@@ -68,34 +65,23 @@ class ViewTripLegs(Tk):
                 destination_entry = Label(self, text=destination)
                 destination_entry.grid(column=1, row=row+1+i, sticky=W, padx=10, pady=10)
 
-                # points_of_interests = self.trip_legs[i].point_of_interest
-                # interest_points_label = Label(self, text=points_of_interests)
-                # interest_points_label.grid(column=2, row=row+1+i, sticky=W, padx=10, pady=10)
+                points_of_interests = self.trip_legs[i].point_of_interest
+                interest_points_label = Label(self, text=points_of_interests)
+                interest_points_label.grid(column=2, row=row+1+i, sticky=W, padx=10, pady=10)
 
-                # transport_provider = self.trip_legs[i].transport_provider
-                # transport_label = Label(self, text=transport_provider)
-                # transport_label.grid(column=3, row=row+1+i, sticky=W, padx=10, pady=10)
+                transport_provider = self.trip_legs[i].transport_provider
+                transport_label = Label(self, text=transport_provider)
+                transport_label.grid(column=3, row=row+1+i, sticky=W, padx=10, pady=10)
 
-                # transport_mode = self.trip_legs[i].transport_mode
-                # transport_mode_label = Label(self, text=transport_mode)
-                # transport_mode_label.grid(column=4, row=row+1+i, sticky=W, padx=10, pady=10) 
-                    
-                buttons.append(Button(self, command=lambda: update_trip_leg(trip_leg) ,text='Update Trip Leg', bg = '#20bebe'))
-                buttons[i].grid(column=5, row=row+1+i, sticky=W, padx=5, pady=10)
+                transport_mode = self.trip_legs[i].transport_mode
+                transport_mode_label = Label(self, text=transport_mode)
+                transport_mode_label.grid(column=4, row=row+1+i, sticky=W, padx=10, pady=10) 
+                
+                update_btn = Button(self, command=lambda: update_trip_leg(trip_leg) ,text='Update Trip Leg', bg = '#20bebe')
+                update_btn.grid(column=5, row=row+1+i, sticky=W, padx=5, pady=10)
 
-
-                # buttons2.append(Button(self, command=lambda: delete_trip_leg(trip_leg) ,text='Delete Trip Leg', bg = 'red'))
-                # buttons2[i].grid(column=col+6, row=row+1+i, sticky=W, padx=5, pady=10)
-
-                btn = Button(self, command=lambda: delete_trip_leg(i) ,text='Delete Trip Leg', bg = 'red')
-                btn.grid(column=col+6, row=row+1+i, sticky=W, padx=5, pady=10)
-
- 
-
-                # print("current i is ", i)
-                # buttonDictionary[i] = Button(self, command=lambda: delete_trip_leg(i) ,text='Delete Trip Leg', bg = 'red')
-                # buttonDictionary[i].grid(column=col+6, row=row+1+i, sticky=W, padx=5, pady=10)
-
+                del_btn = Button(self, command=lambda: delete_trip_leg(i) ,text='Delete Trip Leg', bg = 'red')
+                del_btn.grid(column=col+6, row=row+1+i, sticky=W, padx=5, pady=10)
             
 
         else:

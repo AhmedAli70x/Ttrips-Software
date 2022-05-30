@@ -17,7 +17,7 @@ class CreateTripLeg(Tk):
 
         self.resizable(0, 0)
         self.columnconfigure(0, weight= 1)
-        self.columnconfigure(1, weight= 1)
+        self.columnconfigure(1, weight= 2)
         self.crete_traveller_label = Label(self, text="Create Trip Leg", bg="#20bebe")
         self.crete_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 

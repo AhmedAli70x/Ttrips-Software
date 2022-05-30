@@ -1,9 +1,8 @@
 
 
-from pprint import pprint
 from enums import IDType, TripDuration, TransportMode
-import csv
-import os
+
+
 
 class Trip:
     trip_count =  0
@@ -16,16 +15,15 @@ class Trip:
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
+        self.payments = []
         
-    
 
         for dur in TripDuration:
             if dur.name == duration:
                 self.duration = duration
                 break
-            
             self.duration = None
-        print(f" Duration is: {self.duration}")
+        # print(f" Duration is: {self.duration}")
  
         
     @property
@@ -57,29 +55,29 @@ class Trip:
     def view_traverllers(self):
         if self.travellers:
             for traveller in self.travellers:
-                print(traveller.name)
+                print(traveller)
             return self.travellers
         else: 
             return False
 
-    def view_travellers(self):
+    def view_trip_legs(self):
         if self.travellers:
-            for traveller in self.travellers:
-                print(traveller[0])
+            for trip_leg in self.trip_legs:
+                print(trip_leg)
             return self.travellers
         else:
-            print("No Travellers Found")
+            print("No Trip Legs Found")
             return False
 
     def del_traveller(self, id):
         if self.travellers:
-            for traveller in self.travellers:
-                if traveller[0] == id:
-                    self.travellers.remove(traveller)
-                    print(f"Traveller rmoved")
-                    return True      
-            print("Not Found")
-            return False
+            try:
+                self.travellers.pop(id)
+                print(f"Traveller removed")
+                return True 
+            except:
+                print(f"{id} out of index")  
+                return False   
         else:
             print("No Travellers")
             return False
@@ -104,9 +102,9 @@ class TripLeg:
         self.point_of_interest = point_of_interest
         self.transport_provider = transport_provider
 
+
         for vehicl in TransportMode:
             if vehicl.name == transport_mode:
-                transport_mode = vehicl.name
                 self.transport_mode = transport_mode
                 break
         
@@ -121,18 +119,9 @@ class TripLeg:
     def __str__(self) -> str:
         return f"Strating Location: {self.starting_location}, Destination: {self.destination}"
     
-    def add_point_of_interest(self, points_list):
-        for point in points_list:
-            self.points_of_interests.append(point)
-    
-    def view_point_of_interests(self):
-        if self.points_of_interests:
-            for point in self.points_of_interests:
-                print(point)
-        else:
-            print("None")
-    
 
+    
+    
 
 class Traveller:
     travellers_count = 0
@@ -151,18 +140,22 @@ class Traveller:
     def __str__(self) -> str:
         return f"Traveller name is {self.name}"
 
-    def add_id(self, type, number):
-        new_id = Passport(type, number)
-        self.gov_ids.append(new_id)
-    
+    def add_id(self, type, number, fullname, expiry_date, country):
+        try:
+            new_passport = Passport(type, number, fullname, expiry_date, country)
+            self.gov_ids.append(new_passport)
+            return True
+        except:
+            return False
+
     def view_id(self):
         for id in self.gov_ids:
             print(id)
                
 class Passport:
-    def __init__(self, type, number, fullname=None, expirary_date=None, country=None):
+    def __init__(self, type, number, fullname=None, expiry_date=None, country=None):
         self.full_name = fullname
-        self.expirary_date = expirary_date
+        self.expiry_date = expiry_date
         self.country = country
         self.number = number
         for id in IDType:
@@ -181,15 +174,5 @@ class Passport:
         return f"(ID Type is {self.id_type}, ID Number is {self.number})"
 
 
-#testing
 
-# passport = ID("national_id", 123456)
-# print(passport.id_type)
-
-
-# trip_leg_1 = TripLeg("Solent", "park")
-
-# trip_leg_1.add_point_of_interest(['library'])
-
-# trip_leg_1.view_point_of_interests()
 

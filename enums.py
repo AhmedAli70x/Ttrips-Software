@@ -1,16 +1,15 @@
 from enum import Enum
 
 class TripDuration(Enum):
-   one_day = 1
-   weekend = 2
-   fortnight = 3
+   one_day = 0
+   weekend = 1
+   fortnight = 2
 
 class TransportMode(Enum):
-   plan = 1
-   ferry = 2
-   coach = 3
-   taxi = 4
-
+   plan = 0
+   ferry = 1
+   coach = 2
+   taxi = 3
 
 class IDType(Enum):
    passport = 1
@@ -21,7 +20,6 @@ class UserRole(Enum):
    coodinator = 1
    manager = 2
    admin =  3
-
 
 
 

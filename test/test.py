@@ -1,3 +1,3 @@
-a = ['a', 'b', 'c', 'd']
-a.pop(0)
-print(round(1/10))
+from datetime import datetime
+
+print(datetime.today().strftime('%Y-%m-%d'))

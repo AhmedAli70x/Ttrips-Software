@@ -1,8 +1,10 @@
+from inspect import trace
 from msilib.schema import ComboBox
 from tkinter import *
 from tkinter import messagebox
 
 from tkinter import ttk
+import traceback
 from trips import Trip, Traveller
 
 
@@ -20,89 +22,70 @@ class UpdateTripLeg(Tk):
         window.grid(column=0,row=0,padx=5, pady=10) 
 
 
-        self.update_traveller_label = Label(window, text=f"Update Trip Leg {self.trip_leg.name}", bg="#20bebe")
+        self.update_traveller_label = Label(window, text=f"Update Trip Leg ", bg="#20bebe")
         self.update_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
-
-
-    
 
 
         def update_traveller():
             try:
-                self.traveller.name = self.name_entry.get()
-                self.traveller.address = self.address_entry.get()
-                self.traveller.birth_date = self.birth_date_entry.get()
-                self.traveller.gov_ids[0].id_type = self.name_entry.get()
-                self.traveller.emr_contact = self.ID_entry.get()
-                self.traveller.gov_ids[0].number = self.ID_num_entry.get()
+                self.trip_leg.starting_location = self.strat_location_entry.get()
+                self.trip_leg.destination = self.destination_entry.get()
+                self.trip_leg.point_of_interest = self.interest_points_entry.get()
+                self.trip_leg.transport_provider = self.transport_entry.get()
+                print("Trans mode is", self.transport_mode_entry.get())
+                self.trip_leg.transport_mode = self.transport_mode_entry.get()
                 self.destroy()
-                messagebox.showinfo( title="Success", message=f"Traveller {self.traveller.name} Updated Successfully")
-                print(f"Traveller {self.traveller.name} Updated Successfully")
+                messagebox.showinfo( title="Success", message=f"Trip Leg Updated Successfully")
+                # print(f"Traveller  Updated Successfully")
                 
-            except:
-                messagebox.showerror( title="Error", message=f"Failed to update {self.traveller.name}")
+            except ZeroDivisionError:
+                traceback.print_exc()
+                messagebox.showerror( title="Error", message=f"Failed to update Trip Leg ")
 
             
         col =0
         row = 1
 
-        name = self.traveller.name
-        address = self.traveller.address
-        birthdate = self.traveller.birth_date
-        emr_contact = self.traveller.emr_contact
-        self.id_type = self.traveller.gov_ids[0].id_type
-        id_number = self.traveller.gov_ids[0].number
-
-        self.combobox_num =0
-        if self.id_type == "passport":
-            self.combobox_num =0
-        elif self.id_type == "driving_license":
-            self.combobox_num =1
-        else:
-            self.combobox_num =2
-
+        starting_location = self.trip_leg.starting_location
+        destination = self.trip_leg.destination
+        point_of_interest = self.trip_leg.point_of_interest
+        transport_provider = self.trip_leg.transport_provider
+        transport_mode = self.trip_leg.transport_mode
+   
         
 
-        self.name_label = Label(window, text="Name: ")
-        self.name_label.grid(column=col, row=row, sticky=E, padx=5, pady=10)
-        self.name_var1= StringVar(self, value= name)
-        self.name_entry = Entry(window, textvariable=self.name_var1)
-        self.name_entry.grid(column=col+1, row=row, sticky=E, padx=5, pady=10)
-        
-        
+        self.strat_location_label = Label(self, text="Start Lcoation: ")
+        self.strat_location_label.grid(column=col, row=row, sticky=E, padx=5, pady=10)
+        self.start_location_var = StringVar(self, value= starting_location)
+        self.strat_location_entry = Entry(self, textvariable=self.start_location_var )
+        self.strat_location_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10) 
 
-        self.address_label = Label(window, text="Address: ")
-        self.address_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
-        self.address_var= StringVar(self, value= address)
-        self.address_entry = Entry(window, textvariable = self.address_var)
-        self.address_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10)     
+        self.destination_label = Label(self, text="Destination: ")
+        self.destination_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
+        self.destination_var = StringVar(self, value= destination)
+        self.destination_entry = Entry(self, textvariable=self.destination_var)
+        self.destination_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10)     
            
-        self.birth_date_label = Label(window, text="Birth Date: ")
-        self.birth_date_label.grid(column=col, row=row+2, sticky=E, padx=5, pady=10)
-        self.birth_date_var= StringVar(self, value= birthdate)
-        self.birth_date_entry = Entry(window, textvariable = self.birth_date_var)
-        self.birth_date_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10) 
+        self.interest_points_label = Label(self, text="Points of interest: ")
+        self.interest_points_label.grid(column=col, row=row+2, sticky=E, padx=5, pady=10)
+        self.point_of_interest_var = StringVar(self, value= point_of_interest)
+        self.interest_points_entry = Entry(self, textvariable=self.point_of_interest_var)
+        self.interest_points_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10) 
 
-        self.emr_contact_label = Label(window, text="Emr Contact:")
-        self.emr_contact_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
-        self.emr_contact_var= StringVar(self, value= emr_contact)
-        self.emr_contact_entry = Entry(window,  textvariable = self.emr_contact_var)
-        self.emr_contact_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
 
-        self.ID_label = Label(window, text="ID:")
-        self.ID_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
+        self.transport_label = Label(self, text="Transport Provider:")
+        self.transport_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
+        self.transport_provider_var = StringVar(self, value= transport_provider)
+        self.transport_entry = Entry(self, textvariable = self.transport_provider_var)
+        self.transport_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
 
-        self.ID_entry = ttk.Combobox(window, values=["passport", "driving_license", "national_id"])
-        self.ID_entry.current(self.combobox_num)
-        self.ID_entry.grid(column=col+1, row=row+4, sticky=W, pady=10)
-
-        self.ID_num_label = Label(window, text="ID Number:")
-        self.ID_num_label.grid(column=col, row=row+5, sticky=E, padx=5, pady=10)
-        self.ID_num_var= StringVar(self, value=id_number)
-        self.ID_num_entry = Entry(window, textvariable = self.ID_num_var)
-        self.ID_num_entry.grid(column=col+1, row=row+5, sticky=W, pady=10) 
+        self.transport_mode_label = Label(self, text="Transport Mode: ")
+        self.transport_mode_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
+        self.transport_mode_var = StringVar(self, value=transport_mode)
+        self.transport_mode_entry = ttk.Combobox(self, textvariable= self.transport_mode_var, values=[ "plan", "ferry", "coach", "taxi"])
+        self.transport_mode_entry.grid(column=col+1, row=row+4, sticky=W, pady=10)
             
-        update_btn = Button(window, command=lambda: update_traveller() ,text='Update', bg = '#20bebe')
+        update_btn = Button(self, command = update_traveller ,text='Update', bg = '#20bebe')
         update_btn.grid(column=col+1, row=row+6, sticky=W, padx=5, pady=10)
 
 

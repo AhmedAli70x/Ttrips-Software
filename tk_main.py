@@ -13,6 +13,7 @@ from tk_create_traveller import CreateTraveller
 from tk_view_travellers import ViewTravellers
 from tk_create_trip_leg import CreateTripLeg
 from tk_update_trip import UpdateTrip
+from tk_take_payment import TakePaymentGUI
 from users import * 
 
 class MainMenu(Tk):
@@ -20,7 +21,7 @@ class MainMenu(Tk):
         super().__init__()
         self.system = system
         self.title("Trips")
-        self.geometry("800x500")
+        self.geometry("900x500")
 
 
         self.head_label = Label(self, text="Trip System", bg="#20bebe")
@@ -112,19 +113,21 @@ class MainMenu(Tk):
         def update_trip(id):
             update_trip = UpdateTrip(self.system.trips[id])
 
+        def take_payment(trip_id):
+            take_payment = TakePaymentGUI(self.system, trip_id)
 
         self.name_view = Label(self.view_trips, text="Name")
-        self.name_view.grid(column=col, row=row+5, sticky=E, padx=10, pady=10)
+        self.name_view.grid(column=col, row=row+1, sticky=E, padx=10, pady=10)
         self.date_view = Label(self.view_trips, text="Start Date")
-        self.date_view.grid(column=col+1, row=row+5, sticky=E, padx=10, pady=10)
+        self.date_view.grid(column=col+1, row=row+1, sticky=E, padx=10, pady=10)
         self.duration_view = Label(self.view_trips, text="Duration")
-        self.duration_view.grid(column=col+2, row=row+5, sticky=E, padx=10, pady=10)
+        self.duration_view.grid(column=col+2, row=row+1, sticky=E, padx=10, pady=10)
 
         self.traveller_label = Label(self.view_trips, text="Create Traveller")
-        self.traveller_label.grid(column=col+2, row=row+5, sticky=E, padx=10, pady=10)
+        self.traveller_label.grid(column=col+3, row=row+1, sticky=E, padx=10, pady=10)
 
         self.trip_leg_view = Label(self.view_trips, text="Create Trip Leg")
-        self.trip_leg_view.grid(column=col+2, row=row+5, sticky=E, padx=10, pady=10)
+        self.trip_leg_view.grid(column=col+4, row=row+1, sticky=E, padx=10, pady=10)
 
         def view_trips(event):
             trips_numer = len(self.system.trips)
@@ -132,33 +135,37 @@ class MainMenu(Tk):
                 for i in range(trips_numer):
                     trip_name = self.system.trips[i].name
                     name_view_label = Label(self.view_trips, text=trip_name)
-                    name_view_label.grid(column=0, row=row+6+i, sticky=E, padx=10, pady=10)
+                    name_view_label.grid(column=0, row=row+2+i, sticky=E, padx=10, pady=10)
 
                     start_date = self.system.trips[i].start_date
                     name_view_label = Label(self.view_trips, text=start_date)
-                    name_view_label.grid(column=1, row=row+6+i, sticky=E, padx=10, pady=10)
+                    name_view_label.grid(column=1, row=row+2+i, sticky=E, padx=10, pady=10)
 
                     duration_name = self.system.trips[i].duration
                     name_view_label = Label(self.view_trips, text=duration_name)
-                    name_view_label.grid(column=2, row=row+6+i, sticky=E, padx=10, pady=10)
+                    name_view_label.grid(column=2, row=row+2+i, sticky=E, padx=10, pady=10)
                             
                     create_traveller_btn = Button(self.view_trips, command=lambda: create_traveller(i) ,text='Create Traveller', bg = '#20bebe')
-                    create_traveller_btn.grid(column=col+3, row=row+6+i, sticky=W, padx=5, pady=10)
+                    create_traveller_btn.grid(column=col+3, row=row+2+i, sticky=W, padx=5, pady=10)
 
                     create_trip_leg_btn = Button(self.view_trips, command=lambda: create_trip_leg(i) ,text='Create Trip Leg', bg = '#20bebe')
-                    create_trip_leg_btn.grid(column=col+4, row=row+6+i, sticky=W, padx=5, pady=10)
+                    create_trip_leg_btn.grid(column=col+4, row=row+2+i, sticky=W, padx=5, pady=10)
 
                     view_travellers_btn =Button(self.view_trips, command=lambda: view_travellers(i) ,text='View Travellers', bg = '#20bebe')
-                    view_travellers_btn.grid(column=col+5, row=row+6+i, sticky=W, padx=5, pady=10)
+                    view_travellers_btn.grid(column=col+5, row=row+2+i, sticky=W, padx=5, pady=10)
 
                     view_trip_legs_btn = Button(self.view_trips, command=lambda: view_trip_legs(i) ,text='View Trip Legs', bg = '#20bebe')
-                    view_trip_legs_btn.grid(column=col+6, row=row+6+i, sticky=W, padx=5, pady=10)
+                    view_trip_legs_btn.grid(column=col+6, row=row+2+i, sticky=W, padx=5, pady=10)
+
+                    take_payment_btn = Button(self.view_trips, command=lambda: take_payment(i) ,text='Take Payment', bg = 'magenta')
+                    take_payment_btn.grid(column=col+7, row=row+2+i, sticky=W, padx=5, pady=10)
+
 
                     update_trip_btn = Button(self.view_trips, command=lambda: update_trip(i), text = "Update Trip", bg="yellow")
-                    update_trip_btn.grid(column= col+7, row=row+6+i, sticky=W, padx=5, pady=10)
+                    update_trip_btn.grid(column= col+8, row=row+2+i, sticky=W, padx=5, pady=10)
 
                     delete_trip_btn = Button(self.view_trips, command=lambda: delete_trip(i) ,text='Delete', bg = 'red')
-                    delete_trip_btn.grid(column=col+8, row=row+6+i, sticky=W, padx=5, pady=10)
+                    delete_trip_btn.grid(column=col+9, row=row+2+i, sticky=W, padx=5, pady=10)
 
 
 

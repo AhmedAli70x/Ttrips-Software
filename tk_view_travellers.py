@@ -23,7 +23,7 @@ class ViewTravellers(Tk):
 
         def update_traveller(traveller_id):
             self.destroy()
-            print(f"Update traveller {id}") 
+            # print(f"Update traveller {id}") 
             self.traveller = self.travellers[traveller_id]
             update_traveller = UpdateTraveller(self.traveller)
             update_traveller.mainloop()
