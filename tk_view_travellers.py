@@ -15,6 +15,7 @@ class ViewTravellers(Tk):
    
         self.title("View Travellers")
         self.geometry("700x600")
+        self.resizable(0, 0)
         self.configure(bg='white')
       
         self.view_traveller_label = Label(self, text="View Travellers", bg="#20bebe")

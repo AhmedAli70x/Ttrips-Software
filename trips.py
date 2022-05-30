@@ -1,17 +1,18 @@
 
-
 from enums import IDType, TripDuration, TransportMode
-
+from invoice  import Invoice
+from datetime import datetime
 
 
 class Trip:
     trip_count =  0
-    def __init__(self, name, start_date, contact_numer = 999999,  duration= "one_day"):
+    def __init__(self, name, start_date, trip_coodinator= None, trip_manager= None,  duration= "one_day"):
         Trip.trip_count += 1
         self.id = Trip.trip_count
         self.name = name
         self.start_date = start_date
-        self.contact_numer = contact_numer
+        self.trip_coodinator = trip_coodinator
+        self.trip_manager = trip_manager
         self.travellers = []
         self.trip_legs = []
         self.support_staff = []
@@ -90,6 +91,23 @@ class Trip:
             print("Cannot add support staff")
             return False
 
+    
+    def take_payment(self, amount, trip=None, username=None, traveller_name=None, date=datetime.today().strftime('%Y-%m-%d') ):
+        new_payment = Invoice(amount, trip, username, traveller_name, date)
+        self.payments.append(new_payment)
+
+
+
+    @property
+    def total_invoice(self):
+        total_payments = 0
+        for invoice in self.payments:
+            total_payments += invoice.amount
+
+        # print(total_payments)
+        return(total_payments)
+    
+
 
 class TripLeg:
     trip_leg_count = 0
@@ -121,7 +139,6 @@ class TripLeg:
     
 
     
-    
 
 class Traveller:
     travellers_count = 0
@@ -140,7 +157,7 @@ class Traveller:
     def __str__(self) -> str:
         return f"Traveller name is {self.name}"
 
-    def add_id(self, type, number, fullname, expiry_date, country):
+    def create_id(self, type, number, fullname, expiry_date, country):
         try:
             new_passport = Passport(type, number, fullname, expiry_date, country)
             self.gov_ids.append(new_passport)
@@ -151,6 +168,7 @@ class Traveller:
     def view_id(self):
         for id in self.gov_ids:
             print(id)
+
                
 class Passport:
     def __init__(self, type, number, fullname=None, expiry_date=None, country=None):

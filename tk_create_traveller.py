@@ -10,10 +10,10 @@ from trips import Trip, Traveller
 
 class CreateTraveller(Tk):
 
-    def __init__(self, system, trip_id):
+    def __init__(self, trip):
         super().__init__()
-        self.system = system
-        self.id = trip_id 
+        self.trip = trip
+
         # print("My trip id is", self.id)
         self.title("Create Traveller")
         self.geometry("600x600")
@@ -90,21 +90,22 @@ class CreateTraveller(Tk):
                 expiry_date = self.expiray_date_entry.get()
                 country = self.country_entry.get()
 
-                check_trip = self.system.search_trip(self.id)
-                print('Check trip result is',check_trip)
+                self.trip.create_traveller(name, address, birth_date , emr_contact )
+                self.trip.travellers[-1].create_id(ID_type, ID_num,full_name,  expiry_date, country)
+                messagebox.showinfo(title="Traveller Created", message="Traveller Created Successfully")
 
-                if check_trip == 0 or check_trip > 0 :
-                    new_traveller = Traveller(name, address, birth_date, emr_contact)
-                    new_traveller.add_id(ID_type, ID_num, full_name, expiry_date, country)
-                    self.system.trips[check_trip].travellers.append(new_traveller)
-                    messagebox.showinfo(title="Traveller Created", message="Traveller Created")
+                # if check_trip == 0 or check_trip > 0 :
+                #     new_traveller = Traveller(name, address, birth_date, emr_contact)
+                #     new_traveller.add_id(ID_type, ID_num, full_name, expiry_date, country)
+                #     self.system.trips[check_trip].travellers.append(new_traveller)
 
-                    print(self.system.trips[0])
+                #     print(self.system.trips[0])
                 self.destroy()
+
             except ZeroDivisionError:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Failed to create traveller")
-                self.system.refresh()
+    
                 
             # print(name,address,birth_date,emr_contact,ID_type,ID_num )
 
@@ -113,8 +114,3 @@ class CreateTraveller(Tk):
         self.save_tra_btn.grid(column=col+1, row=row+9, sticky=W, padx=5, pady=10, columnspan= 2)  
 
     
-        
-
-        # self.date_entry.insert("Date Format")    
-
-

@@ -5,7 +5,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import traceback
 from trips import Trip, Traveller
-
+from tk_coodinator_gui import CoodinatorMenu
 from tk_main import MainMenu
 class LoginGUI(Tk):
 
@@ -31,21 +31,29 @@ class LoginGUI(Tk):
         self.username_entry = Entry(self, textvariable = self.username_var)
         self.username_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10) 
 
-        self.password_label = Label(self, text="Password:")
-        self.password_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
-        self.password_var= StringVar()
-        self.password_entry = Entry(self, textvariable = self.password_var)
-        self.password_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10)     
+        # self.password_label = Label(self, text="Password:")
+        # self.password_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
+        # self.password_var= StringVar()
+        # self.password_entry = Entry(self, textvariable = self.password_var)
+        # self.password_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10)     
            
 
         def login():
             username = self.username_entry.get()
-            password = self.password_entry.get()
-            system.login(username, password)
-            if self.system.login_user == "admin":
+            # password = self.password_entry.get()
+            system.login(username)
+            if self.system.login_user == "coodinator":
+                self.destroy()
+                main_gui = CoodinatorMenu(self.system)
+                main_gui.mainloop()
+            elif self.system.login_user == "admin":
                 self.destroy()
                 main_gui = MainMenu(self.system)
                 main_gui.mainloop()
+
+            # elif self.system.login_user == "manager":
+            #     main_gui = ManagerMenu(self.system)
+            #     main_gui.mainloop()
             # try:
             #     username = self.username_entry.get()
             #     password = self.password_entry.get()

@@ -48,10 +48,6 @@ class ViewTripLegs(Tk):
         self.transport_mode_label = Label(self, text="Transport Mode")
         self.transport_mode_label.grid(column=col+4, row=row, sticky=W, padx=5, pady=10)
 
-
-        buttons = []
-        buttons2 = []
-        buttonDictionary = {}
         #Check if the trip has travellers, 4th element is the travellers list
         if self.trip_legs:
             
@@ -85,7 +81,6 @@ class ViewTripLegs(Tk):
             
 
         else:
-            self.destroy()
             messagebox.showinfo(title="No Trip Legs", message="No Trip Legs to display")
             
 

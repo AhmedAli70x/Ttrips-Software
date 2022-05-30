@@ -21,7 +21,8 @@ class MainMenu(Tk):
         super().__init__()
         self.system = system
         self.title("Trips")
-        self.geometry("900x500")
+        self.geometry("1000x500")
+        self.resizable(0, 0)
 
 
         self.head_label = Label(self, text="Trip System", bg="#20bebe")
@@ -81,9 +82,9 @@ class MainMenu(Tk):
         self.submit_btn.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10) 
 
         
-        def create_traveller(id):
+        def create_traveller(trip):
             # print("My create id is", id)
-            new_traveller = CreateTraveller(self.system, id)
+            new_traveller = CreateTraveller(trip)
             new_traveller.mainloop()
             # print(f"Add Traveller Run {id}")
 
@@ -112,9 +113,15 @@ class MainMenu(Tk):
         
         def update_trip(id):
             update_trip = UpdateTrip(self.system.trips[id])
+            update_trip.mainloop()
 
-        def take_payment(trip_id):
-            take_payment = TakePaymentGUI(self.system, trip_id)
+        def take_payment(trip):
+            take_payment = TakePaymentGUI(self.system, trip)
+            take_payment.mainloop()
+
+        def gen_trip_invoice(trip):
+            trip_total = TripTotalGUI(self.system. trip)
+            trip_total.mainloop()
 
         self.name_view = Label(self.view_trips, text="Name")
         self.name_view.grid(column=col, row=row+1, sticky=E, padx=10, pady=10)
@@ -132,7 +139,7 @@ class MainMenu(Tk):
         def view_trips(event):
             trips_numer = len(self.system.trips)
             if trips_numer:
-                for i in range(trips_numer):
+                for i, trip in enumerate(self.system.trips):
                     trip_name = self.system.trips[i].name
                     name_view_label = Label(self.view_trips, text=trip_name)
                     name_view_label.grid(column=0, row=row+2+i, sticky=E, padx=10, pady=10)
@@ -145,7 +152,7 @@ class MainMenu(Tk):
                     name_view_label = Label(self.view_trips, text=duration_name)
                     name_view_label.grid(column=2, row=row+2+i, sticky=E, padx=10, pady=10)
                             
-                    create_traveller_btn = Button(self.view_trips, command=lambda: create_traveller(i) ,text='Create Traveller', bg = '#20bebe')
+                    create_traveller_btn = Button(self.view_trips, command=lambda: create_traveller(trip) ,text='Create Traveller', bg = '#20bebe')
                     create_traveller_btn.grid(column=col+3, row=row+2+i, sticky=W, padx=5, pady=10)
 
                     create_trip_leg_btn = Button(self.view_trips, command=lambda: create_trip_leg(i) ,text='Create Trip Leg', bg = '#20bebe')
@@ -157,7 +164,7 @@ class MainMenu(Tk):
                     view_trip_legs_btn = Button(self.view_trips, command=lambda: view_trip_legs(i) ,text='View Trip Legs', bg = '#20bebe')
                     view_trip_legs_btn.grid(column=col+6, row=row+2+i, sticky=W, padx=5, pady=10)
 
-                    take_payment_btn = Button(self.view_trips, command=lambda: take_payment(i) ,text='Take Payment', bg = 'magenta')
+                    take_payment_btn = Button(self.view_trips, command=lambda: take_payment(trip) ,text='Take Payment', bg = 'magenta')
                     take_payment_btn.grid(column=col+7, row=row+2+i, sticky=W, padx=5, pady=10)
 
 
@@ -167,22 +174,24 @@ class MainMenu(Tk):
                     delete_trip_btn = Button(self.view_trips, command=lambda: delete_trip(i) ,text='Delete', bg = 'red')
                     delete_trip_btn.grid(column=col+9, row=row+2+i, sticky=W, padx=5, pady=10)
 
-
+                    total_invoice_btn = Button(self.view_trips, command=lambda: gen_trip_invoice(trip) ,text='Tot Trip Invoice', bg = 'black', fg='white')
+                    total_invoice_btn.grid(column=col+10, row=row+2+i, sticky=W, padx=5, pady=10)
 
 
 
         def create_user():
             username = self.username_entry.get()
-            password = self.password_entry.get()
+            # password = self.password_entry.get()
+            user_name = self.password_entry.get()
             phone = self.phone_entry.get()
             role = self.role_entry.get()
             print(f"Create New User ")
             if role == "Coodinator":
-                new_user = Coodinator(username, password, phone)
+                new_user = Coodinator(username, user_name, phone)
             elif role == "Manager":
-                new_user = Manager(username, password, phone)
+                new_user = Manager(username,user_name,  phone)
             elif role == "Administrator":
-                new_user = Administrator(username, password, phone)
+                new_user = Administrator(username,user_name,  phone)
             self.system.users.append(new_user)
             messagebox.showinfo( title="Success", message=f"User Created Successfully")
         
@@ -192,10 +201,10 @@ class MainMenu(Tk):
         self.username_entry = Entry(self.create_user)
         self.username_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10)     
            
-        self.password_label = Label(self.create_user, text="Password: ")
-        self.password_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
-        self.password_entry = Entry(self.create_user)
-        self.password_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10) 
+        self.user_name_label = Label(self.create_user, text="Name: ")
+        self.user_name_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
+        self.user_name_entry = Entry(self.create_user)
+        self.user_name_entry.grid(column=col+1, row=row+1, sticky=W, padx=5, pady=10) 
 
         self.phone_label = Label(self.create_user, text="Phone: ")
         self.phone_label.grid(column=col, row=row+2, sticky=E, padx=5, pady=10)
@@ -205,7 +214,7 @@ class MainMenu(Tk):
 
         self.role_label = Label(self.create_user, text="Role: ")
         self.role_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
-        self.role_entry = ttk.Combobox(self.create_user, values=["Coodinator", "Manager",  "Administrator"])
+        self.role_entry = ttk.Combobox(self.create_user, values=["Coodinator", "Manager"])
         self.role_entry.current(0)
         self.role_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
             

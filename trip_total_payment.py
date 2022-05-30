@@ -1,27 +1,26 @@
 
 
-from datetime import datetime
-from tkinter import *
-from tkinter import ttk
+from tkinter import Tk
 from tkinter import messagebox
 import traceback
-from invoice import Invoice
+from datetime import datetime
 
-class TakePaymentGUI(Tk):
+from tkinter import * 
+
+
+class TripTotalGUI(Tk):
 
     def __init__(self, system, trip):
         super().__init__()
         self.system = system
         self.trip = trip
-   
-        self.title("Take Payement")
+          
+        self.title("Trip Total Payment")
         self.geometry("500x600")
         self.resizable(0, 0)
         self.columnconfigure(0, weight= 1)
-        self.columnconfigure(1, weight= 2)
-        # self.configure(bg='white')
-              
-        self.take_payment = Label(self, text="Take Payment", bg="#20bebe")
+        self.columnconfigure(1, weight= 2)   
+        self.take_payment = Label(self, text="Trip Total Payment", bg="#20bebe")
         self.take_payment.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 
         def save_invoice():
@@ -48,7 +47,7 @@ class TakePaymentGUI(Tk):
         row = 1
 
 
-        self.username_label = Label(self, text="User Name: ")
+        self.username_label = Label(self, text="Name: ")
         self.username_label.grid(column=col, row=row, sticky=E, padx=5, pady=10)
         self.username_var= StringVar(self, value= self.system.cur_user.name)
         self.username_entry = Label(self, textvariable = self.username_var, bg="white")
@@ -69,27 +68,14 @@ class TakePaymentGUI(Tk):
         self.trip_name_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10) 
 
 
-        self.amount_label = Label(self, text="Amount: ")
+        self.amount_label = Label(self, text="Total Trip Payment: ")
         self.amount_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
-        self.amount_var= StringVar()
-        self.amount_entry = Entry(self, textvariable = self.amount_var)
+        self.amount_var= StringVar(self, value= self.trip.total_invoice)
+        self.amount_entry = Label(self, textvariable = self.amount_var, bg="yellow")
         self.amount_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10) 
 
-
-
-        travellers_list = []
-        for traveller in self.trip.travellers:
-            travellers_list.append(traveller.name)
-
-        self.traveller_label = Label(self, text="Traveller: ")
-        self.traveller_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
-        self.traveller_entry = ttk.Combobox(self, values = travellers_list)
-        self.traveller_entry.current(0)
-        self.traveller_entry.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10) 
-
-
-
-        save_invoice_btn = Button(self, command= save_invoice ,text='Save', bg = '#20bebe')
+        save_invoice_btn = Button(self, command= print_invoice ,text='Prinve Invoice', bg = '#20bebe')
         save_invoice_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
+
 
 

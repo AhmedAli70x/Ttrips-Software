@@ -1,15 +1,14 @@
 
 
-from tkinter.messagebox import NO
 
 
 class Coodinator:
-    def __init__(self, username, name,  password, system=None, phone=None ):
+    def __init__(self, username, name, phone, system=None ):
         self.username = username
         self.name = name
-        self.password = password
         self.phone =phone
         self.system = system
+        self.trip = None
 
     def view_trips(self):
         pass
@@ -35,8 +34,13 @@ class Coodinator:
         pass
 
 class Manager(Coodinator):
-    def __init__(self, username, password, phone = None):
-        super().__init__(username, password, phone)
+    def __init__(self,  username, name, phone, system=None):
+        super().__init__( username, name, phone, system)
+        self.managed_trips = []
+
+    
+    def add_trip(self, trip):
+        self.managed_trips.append(trip)
 
     def create_trip():
         pass
@@ -63,8 +67,8 @@ class Manager(Coodinator):
 
 
 class Administrator(Manager):
-    def __init__(self, username, password, phone=None):
-        super().__init__(username, password, phone)
+    def __init__(self,  username, name, phone, system=None):
+        super().__init__( username, name, phone, system)
 
     
     def create_manager():

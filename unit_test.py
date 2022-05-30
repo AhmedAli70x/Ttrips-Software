@@ -8,10 +8,13 @@ from users import *
 class TestSystem(unittest.TestCase):
 
     def test_trip(self):
+        coo1 = Coodinator('coo', "Manie Mark", '1111')
+
         trip1 = Trip("Trip1", "22/05/1994", "1111", duration="one_day")
         self.assertEqual(trip1.name, "Trip1")
         self.assertEqual(trip1.start_date, "22/05/1994")
-        self.assertEqual(trip1.contact_numer, "1111")
+        trip1.trip_coodinator = coo1
+        self.assertEqual(trip1.trip_coodinator.phone, "1111")
         self.assertEqual(trip1.duration, "one_day")
         self.assertEqual(trip1.support_staff_num, 0)
 
@@ -44,7 +47,12 @@ class TestSystem(unittest.TestCase):
         self.assertEqual(trip2.support_staff_num, 0)
         add_support_staff = trip2.add_support_staff("Hassan")
         self.assertFalse(add_support_staff)
-    
+
+        trip2.take_payment(10)
+        trip2.take_payment(20)
+        trip2.take_payment(30)
+        trip_toatl = trip2.total_invoice
+        self.assertEqual(trip_toatl, 60)
 
 
     def TestTripLeg(self):
