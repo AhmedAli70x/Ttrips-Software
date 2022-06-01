@@ -6,7 +6,8 @@ from tkinter import messagebox
 
 from tkinter import ttk
 from trips import Trip, Traveller
-
+from validation import Validation as v
+ 
 
 class CreateTraveller(Tk):
 
@@ -24,7 +25,7 @@ class CreateTraveller(Tk):
         self.crete_traveller_label = Label(self, text="Create New Traveller", bg="#20bebe")
         self.crete_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 
-        # add components
+
         col =0
         row = 1
 
@@ -90,17 +91,14 @@ class CreateTraveller(Tk):
                 expiry_date = self.expiray_date_entry.get()
                 country = self.country_entry.get()
 
-                self.trip.create_traveller(name, address, birth_date , emr_contact )
-                self.trip.travellers[-1].create_id(ID_type, ID_num,full_name,  expiry_date, country)
-                messagebox.showinfo(title="Traveller Created", message="Traveller Created Successfully")
+                checK_traveller = v.check_traveller(name, address, birth_date, emr_contact, ID_num, full_name, expiry_date, country)
 
-                # if check_trip == 0 or check_trip > 0 :
-                #     new_traveller = Traveller(name, address, birth_date, emr_contact)
-                #     new_traveller.add_id(ID_type, ID_num, full_name, expiry_date, country)
-                #     self.system.trips[check_trip].travellers.append(new_traveller)
+                if checK_traveller:
+                    self.trip.create_traveller(name, address, birth_date , emr_contact )
+                    self.trip.travellers[-1].create_id(ID_type, ID_num,full_name,  expiry_date, country)
+                    messagebox.showinfo(title="Traveller Created", message="Traveller Created Successfully")
 
-                #     print(self.system.trips[0])
-                self.destroy()
+                    self.destroy()
 
             except ZeroDivisionError:
                 traceback.print_exc()

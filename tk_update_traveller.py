@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 from tkinter import ttk
 from trips import Trip, Traveller
+from validation import Validation as v
 
 
 class UpdateTraveller(Tk):
@@ -27,19 +28,32 @@ class UpdateTraveller(Tk):
 
         def update_traveller():
             try:
-                self.traveller.name = self.name_entry.get()
-                self.traveller.address = self.address_entry.get()
-                self.traveller.birth_date = self.birth_date_entry.get()
-                self.traveller.emr_contact = self.ID_entry.get()
 
-                self.traveller.gov_ids[0].id_type = self.name_entry.get()
-                self.traveller.gov_ids[0].number = self.ID_num_entry.get()
-                self.traveller.gov_ids[0].fullname = self.full_name_entry.get()
-                self.traveller.gov_ids[0].expiry_date = self.expiray_date_entry.get()
-                self.traveller.gov_ids[0].country = self.country_entry.get()
-                self.destroy()
-                messagebox.showinfo( title="Success", message=f"Traveller {self.traveller.name} Updated Successfully")
-                print(f"Traveller {self.traveller.name} Updated Successfully")
+                name = self.name_entry.get()
+                address = self.address_entry.get()
+                birth_date = self.birth_date_entry.get()
+                emr_contact = self.emr_contact_entry.get()
+                ID_type = self.ID_entry.get()
+                ID_num = self.ID_num_entry.get()
+                full_name = self.full_name_entry.get()
+                expiry_date = self.expiray_date_entry.get()
+                country = self.country_entry.get()
+
+                checK_traveller = v.check_traveller(name, address, birth_date, emr_contact, ID_num, full_name, expiry_date, country)
+                if checK_traveller:
+                    self.traveller.name = self.name_entry.get()
+                    self.traveller.address = self.address_entry.get()
+                    self.traveller.birth_date = self.birth_date_entry.get()
+                    self.traveller.emr_contact = self.ID_entry.get()
+
+                    self.traveller.gov_ids[0].id_type = self.ID_entry.get()
+                    self.traveller.gov_ids[0].number = self.ID_num_entry.get()
+                    self.traveller.gov_ids[0].fullname = self.full_name_entry.get()
+                    self.traveller.gov_ids[0].expiry_date = self.expiray_date_entry.get()
+                    self.traveller.gov_ids[0].country = self.country_entry.get()
+                    self.destroy()
+                    messagebox.showinfo( title="Success", message=f"Traveller {self.traveller.name} Updated Successfully")
+                    # print(f"Traveller {self.traveller.name} Updated Successfully")
                 
             except:
                 messagebox.showerror( title="Error", message=f"Failed to update {self.traveller.name}")
