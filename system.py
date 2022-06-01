@@ -21,6 +21,7 @@ class System:
         self.trips = []
         self.users = []
         self.cur_user = None
+        self.trip_tot_invoices = []
 
     def login(self, username ):
         for user in self.users:

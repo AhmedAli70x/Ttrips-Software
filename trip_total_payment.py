@@ -5,7 +5,9 @@ from tkinter import messagebox
 import traceback
 from datetime import datetime
 
-from tkinter import * 
+from tkinter import *
+from invoice import Invoice 
+from validation import Validation as v
 
 
 class TripTotalGUI(Tk):
@@ -26,20 +28,30 @@ class TripTotalGUI(Tk):
         def print_invoice():
 
             try:
-                amount = self.amount_entry.get()
+                amount = self.amount_var.get()
                 trip_name = self.trip_name_var.get()
                 cur_user_name = self.username_var.get()
-                traveller = self.traveller_entry.get()
                 date = self.date_var.get()
 
-                self.trip.take_payment(amount, trip_name, cur_user_name, traveller, date)
+                check_invoice = v.check_invoice(amount, traveller="NO Traveller")
+                if check_invoice:
+                        new_invoice = Invoice(float(amount), trip_name, cur_user_name, traveller="NO Traveller", date=date)
+                        self.system.trip_tot_invoices.append(new_invoice)
+                        print()
+                        print(' Generating Invoice.....:')
+                        print(' Invoice Details:')
+                        print(' Invoice Trip:', trip_name)
+                        print(' Invoice Amount:', amount)
+                        print(' Invoice Username:', cur_user_name)
+                        print(" Invoice Date:", date)
+                        print()
 
-                self.destroy()
-                messagebox.showinfo(title="Success", message="Payment received",)
+                        self.destroy()
+                        messagebox.showinfo(title="Success", message="Payment Received",)
 
             except Exception:
                 traceback.print_exc()
-                messagebox.showinfo(title="Fail", message="Process fail",)
+                messagebox.showerror(title="Error", message="Payment Fail",)
 
 
 
@@ -74,7 +86,7 @@ class TripTotalGUI(Tk):
         self.amount_entry = Label(self, textvariable = self.amount_var, bg="yellow")
         self.amount_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10) 
 
-        save_invoice_btn = Button(self, command= print_invoice ,text='Prinve Invoice', bg = '#20bebe')
+        save_invoice_btn = Button(self, command= print_invoice ,text='Print Invoice', bg = '#20bebe')
         save_invoice_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
 
 

@@ -51,8 +51,6 @@ class CoodinatorMenu(Tk):
         self.menu.forget(self.create_user)
 
 
-
-
         col =0
         row =1
 

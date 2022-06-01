@@ -14,7 +14,7 @@ class Validation:
 
         
         if msg:
-            messagebox.showerror(title="Error", message=msg)
+            messagebox.showinfo(title="Error", message=msg)
             return False
         else:
             return True
@@ -47,7 +47,7 @@ class Validation:
             msg += 'Country is required \n'
         
         if msg:
-            messagebox.showerror(title="Error", message=msg)
+            messagebox.showinfo(title="Error", message=msg)
             return False
         else:
             return True
@@ -65,7 +65,7 @@ class Validation:
             msg += 'Transport Provider min legth is 4  \n'
 
         if msg:
-            messagebox.showerror(title="Error", message=msg)
+            messagebox.showinfo(title="Error", message=msg)
             return False
         else:
             return True
@@ -83,7 +83,7 @@ class Validation:
             msg += 'Enter valid phone number \n'
 
         if msg:
-            messagebox.showerror(title="Error", message=msg)
+            messagebox.showinfo(title="Error", message=msg)
             return False
         else:
             return True
@@ -100,7 +100,7 @@ class Validation:
             msg += 'Traveller min legth is 3 \n'
 
         if msg:
-            messagebox.showerror(title="Error", message=msg)
+            messagebox.showinfo(title="Error", message=msg)
             return False
         else:
             return True

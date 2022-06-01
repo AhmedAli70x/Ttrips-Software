@@ -7,6 +7,7 @@ import traceback
 from trips import Trip, Traveller
 from tk_coodinator_gui import CoodinatorMenu
 from tk_main import MainMenu
+from tk_manager_gui import ManagerMenu
 class LoginGUI(Tk):
 
     def __init__(self, system= None):
@@ -40,13 +41,13 @@ class LoginGUI(Tk):
                 self.destroy()
                 main_gui = CoodinatorMenu(self.system)
                 main_gui.mainloop()
-            elif self.system.login_user == "admin":
-                self.destroy()
-                main_gui = MainMenu(self.system)
-                main_gui.mainloop()
             elif self.system.login_user == "manager":
                 self.destroy()
                 main_gui = ManagerMenu(self.system)
+                main_gui.mainloop()
+            elif self.system.login_user == "admin":
+                self.destroy()
+                main_gui = MainMenu(self.system)
                 main_gui.mainloop()
 
 

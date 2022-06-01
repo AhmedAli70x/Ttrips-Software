@@ -1,9 +1,11 @@
+from cgitb import text
 from tkinter import *
 from tkinter import messagebox
 
 from tkinter import ttk
 from trips import Trip, Traveller
 from validation import Validation as v
+import traceback
 
 
 class UpdateTraveller(Tk):
@@ -45,17 +47,20 @@ class UpdateTraveller(Tk):
                     self.traveller.address = address
                     self.traveller.birth_date = birth_date
                     self.traveller.emr_contact = emr_contact
-
-                    self.traveller.gov_ids[0].id_type = ID_type
-                    self.traveller.gov_ids[0].number =ID_num
-                    self.traveller.gov_ids[0].fullname = full_name
-                    self.traveller.gov_ids[0].expiry_date = expiry_date
-                    self.traveller.gov_ids[0].country = country
+                    if self.traveller.gov_ids:
+                        self.traveller.gov_ids[0].id_type = ID_type
+                        self.traveller.gov_ids[0].number =ID_num
+                        self.traveller.gov_ids[0].fullname = full_name
+                        self.traveller.gov_ids[0].expiry_date = expiry_date
+                        self.traveller.gov_ids[0].country = country
+                    else:
+                        self.traveller.create_id(ID_type, ID_num, full_name,  expiry_date, country)
                     self.destroy()
                     messagebox.showinfo( title="Success", message=f"Traveller {self.traveller.name} Updated Successfully")
                     # print(f"Traveller {self.traveller.name} Updated Successfully")
                 
-            except:
+            except Exception:
+                traceback.print_exc()
                 messagebox.showerror( title="Error", message=f"Failed to update {self.traveller.name}")
 
             
@@ -66,20 +71,21 @@ class UpdateTraveller(Tk):
         address = self.traveller.address
         birthdate = self.traveller.birth_date
         emr_contact = self.traveller.emr_contact
-        id_type = self.traveller.gov_ids[0].id_type
-        pass_num = self.traveller.gov_ids[0].number
-        full_name = self.traveller.gov_ids[0].full_name
-        expiry_date = self.traveller.gov_ids[0].expiry_date
-        country = self.traveller.gov_ids[0].country
+        if self.traveller.gov_ids:
+            id_type = self.traveller.gov_ids[0].id_type
+            pass_num = self.traveller.gov_ids[0].number
+            full_name = self.traveller.gov_ids[0].full_name
+            expiry_date = self.traveller.gov_ids[0].expiry_date
+            country = self.traveller.gov_ids[0].country
+        else:
+            id_type = 'passport'
+            pass_num = 'NA'
+            full_name = 'NA'
+            expiry_date = 'NA'
+            country = 'NA'
 
-        # self.combobox_num =0
-        # if self.id_type == "passport":
-        #     self.combobox_num =0
-        # elif self.id_type == "driving_license":
-        #     self.combobox_num =1
-        # else:
-        #     self.combobox_num =2
-       
+
+
 
 
         self.name_label = Label(window, text="Name: ")
@@ -108,11 +114,11 @@ class UpdateTraveller(Tk):
 
         self.ID_label = Label(window, text="ID:")
         self.ID_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
-        self.ID_entry = ttk.Combobox(window, values=["passport", "driving_license", "national_id"])
+        self.ID_entry = ttk.Combobox(window, text= id_type,values=["passport", "driving_license", "national_id"])
         self.ID_entry.current(0)
         self.ID_entry.grid(column=col+1, row=row+4, sticky=W, pady=10)
 
-        self.ID_num_label = Label(window, text="Number: ")
+        self.ID_num_label = Label(window, text="ID Number: ")
         self.ID_num_label.grid(column=col, row=row+5, sticky=E, padx=5, pady=10)
         self.ID_num_var= StringVar(window, value=pass_num)
         self.ID_num_entry = Entry(window, textvariable = self.ID_num_var)
