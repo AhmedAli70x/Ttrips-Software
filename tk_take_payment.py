@@ -26,17 +26,31 @@ class TakePaymentGUI(Tk):
 
         def save_invoice():
             try:
-                
-                amount = self.amount_entry.get()
-                trip_name = self.trip_name_var.get()
-                cur_user_name = self.username_var.get()
-                traveller = self.traveller_entry.get()
-                date = self.date_var.get()
+                try:
+                    amount = float(self.amount_entry.get())                
+                    trip_name = self.trip_name_var.get()
+                    cur_user_name = self.username_var.get()
+                    traveller = self.traveller_entry.get()
+                    date = self.date_var.get()
 
-                self.trip.take_payment(amount, trip_name, cur_user_name, traveller, date)
+                    self.trip.take_payment(amount, trip_name, cur_user_name, traveller, date)
 
-                self.destroy()
-                messagebox.showinfo(title="Success", message="Payment received",)
+                    print()
+                    print(' Generating Receipt.....:')
+                    print(' Receipt Details:')
+                    print(' Trip:', trip_name)
+                    print(' Amount:', amount)
+                    print(' Traveller:', traveller)
+                    print(" Date: ", date)
+                    print()
+
+
+                    self.destroy()
+                    messagebox.showinfo(title="Success", message="Payment received")
+
+                except ValueError:
+                    messagebox.showerror(title="Error", message="Please Enter a valid number",)
+
 
             except ZeroDivisionError:
                 traceback.print_exc()
@@ -71,25 +85,52 @@ class TakePaymentGUI(Tk):
 
         self.amount_label = Label(self, text="Amount: ")
         self.amount_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
-        self.amount_var= StringVar()
+        self.amount_var= StringVar(self)
         self.amount_entry = Entry(self, textvariable = self.amount_var)
         self.amount_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10) 
 
-
-
-        travellers_list = []
-        for traveller in self.trip.travellers:
-            travellers_list.append(traveller.name)
-
         self.traveller_label = Label(self, text="Traveller: ")
         self.traveller_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
-        self.traveller_entry = ttk.Combobox(self, values = travellers_list)
-        self.traveller_entry.current(0)
-        self.traveller_entry.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10) 
+
+        travellers_list = []
+        if self.trip.travellers:
+            for traveller in self.trip.travellers:
+                # print(traveller.name)
+                travellers_list.append(traveller.name)  
+    
+            self.traveller_entry = ttk.Combobox(self, values = travellers_list)
+            self.traveller_entry.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10) 
+            self.traveller_entry.current(0)
+            save_invoice_btn = Button(self, command= save_invoice ,text='Save', bg = '#20bebe')
+            save_invoice_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
+
+            no_travellers_var = StringVar(self)
+            self.no_travellers_label = Label(self, textvariable= no_travellers_var, fg="red")
+            self.no_travellers_label.grid(column=col+1, row=row+6, sticky=E, padx=5, pady=1)
+            no_travellers_var.set("")
+
+        else:
+            
+            self.traveller_entry = ttk.Combobox(self, values = travellers_list)
+            self.traveller_entry.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10) 
+
+            save_invoice_btn = Button(self, command= save_invoice ,text='Save', bg = '#20bebe', state=DISABLED)
+            save_invoice_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
+
+            no_travellers_var = StringVar(self)
+            self.no_travellers_label = Label(self, textvariable= no_travellers_var, fg="red")
+            self.no_travellers_label.grid(column=col+1, row=row+6, sticky=E, padx=5, pady=1)
+
+
+            no_travellers_var.set("Create a traveller to take payment")
+            save_invoice_btn.state= DISABLED
 
 
 
-        save_invoice_btn = Button(self, command= save_invoice ,text='Save', bg = '#20bebe')
-        save_invoice_btn.grid(column=col+1, row=row+5, sticky=W, padx=5, pady=10)
+
+
+
+
+            
 
 

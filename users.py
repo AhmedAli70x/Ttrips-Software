@@ -8,6 +8,7 @@ class Coodinator:
         self.name = name
         self.phone =phone
         self.system = system
+        self.role = 'c'
         self.trip = None
 
     def view_trips(self):
@@ -37,6 +38,7 @@ class Manager(Coodinator):
     def __init__(self,  username, name, phone, system=None):
         super().__init__( username, name, phone, system)
         self.managed_trips = []
+        self.role = 'm'
 
     
     def add_trip(self, trip):
@@ -69,6 +71,7 @@ class Manager(Coodinator):
 class Administrator(Manager):
     def __init__(self,  username, name, phone, system=None):
         super().__init__( username, name, phone, system)
+        self.role = 'a'
 
     
     def create_manager():

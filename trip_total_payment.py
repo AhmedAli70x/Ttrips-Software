@@ -23,9 +23,9 @@ class TripTotalGUI(Tk):
         self.take_payment = Label(self, text="Trip Total Payment", bg="#20bebe")
         self.take_payment.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 
-        def save_invoice():
+        def print_invoice():
+
             try:
-                
                 amount = self.amount_entry.get()
                 trip_name = self.trip_name_var.get()
                 cur_user_name = self.username_var.get()
@@ -41,7 +41,7 @@ class TripTotalGUI(Tk):
                 traceback.print_exc()
                 messagebox.showinfo(title="Fail", message="Process fail",)
 
-            
+
 
         col = 0
         row = 1
@@ -68,7 +68,7 @@ class TripTotalGUI(Tk):
         self.trip_name_entry.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10) 
 
 
-        self.amount_label = Label(self, text="Total Trip Payment: ")
+        self.amount_label = Label(self, text="Total Trip Payments: ")
         self.amount_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
         self.amount_var= StringVar(self, value= self.trip.total_invoice)
         self.amount_entry = Label(self, textvariable = self.amount_var, bg="yellow")

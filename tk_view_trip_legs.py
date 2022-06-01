@@ -22,10 +22,11 @@ class ViewTripLegs(Tk):
 
 
         def update_trip_leg(trip_leg):
-            self.destroy()
+            
             # print(f"Update  {trip_leg}") 
             update_traveller = UpdateTripLeg(trip_leg)
             update_traveller.mainloop()
+            self.destroy()
 
 
         def delete_trip_leg(trip_leg_id):
@@ -33,6 +34,7 @@ class ViewTripLegs(Tk):
             self.trip_legs.pop(trip_leg_id)
             self.destroy()
             self.__init__(self.trip_legs)
+            
 
         col =0
         row = 1

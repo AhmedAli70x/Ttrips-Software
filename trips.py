@@ -17,7 +17,7 @@ class Trip:
         self.trip_legs = []
         self.support_staff = []
         self.payments = []
-        
+ 
 
         for dur in TripDuration:
             if dur.name == duration:
@@ -26,7 +26,28 @@ class Trip:
             self.duration = None
         # print(f" Duration is: {self.duration}")
  
-        
+    @property
+    def coodinator(self):
+        try:
+            return self.trip_coodinator.name
+        except:
+            return False
+
+    @property
+    def contact(self): 
+        try: 
+            return self.trip_coodinator.phone
+        except:
+            return  False
+
+    @property
+    def manager(self): 
+        try: 
+            return self.trip_manager.name
+        except:
+            return  False
+
+
     @property
     def support_staff_num(self):
         return round(len(self.travellers)/10)
@@ -101,11 +122,13 @@ class Trip:
     @property
     def total_invoice(self):
         total_payments = 0
-        for invoice in self.payments:
-            total_payments += invoice.amount
-
-        # print(total_payments)
-        return(total_payments)
+        if self.payments:
+            for invoice in self.payments:
+                total_payments += invoice.amount
+   
+            return(total_payments)
+        else:
+             return 0
     
 
 

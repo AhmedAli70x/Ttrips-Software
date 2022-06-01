@@ -16,6 +16,6 @@ class Invoice:
         self.amount = amount
         self.username = username
         self.traveller_name = traveller_name
-        self.data = date
+        self.date = date
 
   

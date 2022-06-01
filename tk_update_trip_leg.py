@@ -14,7 +14,7 @@ class UpdateTripLeg(Tk):
         super().__init__()
         self.trip_leg  = trip_leg 
         self.title("Update Trip Leg")
-        self.geometry("700x600")
+        self.geometry("500x500")
         self.configure(bg='white')
         self.wait_visibility()
 
@@ -26,13 +26,13 @@ class UpdateTripLeg(Tk):
         self.update_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
 
 
-        def update_traveller():
+        def update_trip_leg():
             try:
                 self.trip_leg.starting_location = self.strat_location_entry.get()
                 self.trip_leg.destination = self.destination_entry.get()
                 self.trip_leg.point_of_interest = self.interest_points_entry.get()
                 self.trip_leg.transport_provider = self.transport_entry.get()
-                print("Trans mode is", self.transport_mode_entry.get())
+                # print("Trans mode is", self.transport_mode_entry.get())
                 self.trip_leg.transport_mode = self.transport_mode_entry.get()
                 self.destroy()
                 messagebox.showinfo( title="Success", message=f"Trip Leg Updated Successfully")
@@ -85,7 +85,7 @@ class UpdateTripLeg(Tk):
         self.transport_mode_entry = ttk.Combobox(self, textvariable= self.transport_mode_var, values=[ "plan", "ferry", "coach", "taxi"])
         self.transport_mode_entry.grid(column=col+1, row=row+4, sticky=W, pady=10)
             
-        update_btn = Button(self, command = update_traveller ,text='Update', bg = '#20bebe')
+        update_btn = Button(self, command = update_trip_leg ,text='Update', bg = '#20bebe')
         update_btn.grid(column=col+1, row=row+6, sticky=W, padx=5, pady=10)
 
 

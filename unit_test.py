@@ -1,6 +1,6 @@
 import unittest
 
-
+from system import System
 
 from trips import *
 from users import * 
@@ -33,6 +33,7 @@ class TestSystem(unittest.TestCase):
         trip2 = Trip("Trip2", "22/06/1994", "2222", duration="one day")
         create_trip_leg = trip2.create_trip_leg("Start Location", "Maritime Museum", "National Park")
         self.assertTrue(create_trip_leg)
+
 
         create_traveller = trip2.create_traveller("Luca", "Fareham", "22/09/1999")
         create_traveller = trip2.create_traveller("Chris", "Morocco", "22/09/1999")
@@ -95,6 +96,44 @@ class TestSystem(unittest.TestCase):
         self.assertFalse(isinstance(coodinator, Administrator))
         self.assertFalse(isinstance(mananger, Administrator))
         self.assertTrue(isinstance(admin, Administrator))
+
+    def System(self):
+        trip1 = Trip("Trip1",'10/06/2021')
+        trip1.create_traveller("traveller1", "address1",'22/10/99','4447140')
+        trip1.travellers[0].create_id('passport1','123', 'Jacob Jack2', "25/07/2024", "Chzech")
+
+        trip1.create_traveller("traveller2", "address1",'22/10/99','4447140')
+        trip1.travellers[0].create_id('passport2','123', 'Jacob Jack2', "25/07/2024", "Chzech")
+        system = System()
+        system.trips.append(trip1)
+        admin = Administrator('admin', "Luise Diase", '123')
+        coo1 = Coodinator('coo', "Manie Mark", '123')
+        trip1.trip_coodinator = coo1
+
+        cood2 = Coodinator('coo2', "Luka James", '999')
+
+        man1 = Manager('man1', "Jacob Adam", '123')
+        man2 = Manager('man2', "Sara Henry", '123')
+
+        admin = Administrator('admin', "Luise Diase", '123')
+        system.users.append(admin)
+        system.users.append(coo1)
+        system.users.append(cood2)
+        system.users.append(man1)
+        system.users.append(man2)
+        trip1.trip_coodinator = coo1
+        trip1.take_payment(10)
+        trip1.take_payment(20)
+        trip1.take_payment(10)
+        self.assertEqual(trip1.total_invoice, 40)
+
+        trip2 = Trip("Trip2", "22/06/1994", "2222", duration="one day")
+        system.trips.append(trip2)
+        trip2.take_payment(20)
+        self.assertEqual(system.total_invoices, 60)
+        self.assertTrue(system.invoices)
+
+
 
 
 

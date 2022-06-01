@@ -105,7 +105,6 @@ class ViewTravellers(Tk):
             
 
         else:
-            self.destroy()
             messagebox.showinfo(title="No Travellers", message="No Travellers to display",)
 
 

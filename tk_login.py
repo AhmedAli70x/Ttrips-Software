@@ -14,6 +14,7 @@ class LoginGUI(Tk):
         self.system = system
         self.title("Login")
         self.geometry("300x300")
+        self.resizable(10, 10)
 
         self.columnconfigure(0, weight= 2)
         self.columnconfigure(1, weight= 2)
@@ -21,7 +22,6 @@ class LoginGUI(Tk):
         
         self.crete_traveller_label.grid( column= 1 , row=0, sticky=W, padx=20, pady=20)
 
-        # add components
         col =0
         row = 1
 
@@ -49,6 +49,10 @@ class LoginGUI(Tk):
             elif self.system.login_user == "admin":
                 self.destroy()
                 main_gui = MainMenu(self.system)
+                main_gui.mainloop()
+            elif self.system.login_user == "manager":
+                self.destroy()
+                main_gui = ManagerMenu(self.system)
                 main_gui.mainloop()
 
             # elif self.system.login_user == "manager":

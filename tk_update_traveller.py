@@ -94,11 +94,11 @@ class UpdateTraveller(Tk):
 
         self.ID_label = Label(window, text="ID:")
         self.ID_label.grid(column=col, row=row+4, sticky=E, padx=5, pady=10)
-        self.ID_entry = ttk.Combobox(window, values=["passport"])
+        self.ID_entry = ttk.Combobox(window, values=["passport", "driving_license", "national_id"])
         self.ID_entry.current(0)
         self.ID_entry.grid(column=col+1, row=row+4, sticky=W, pady=10)
 
-        self.ID_num_label = Label(window, text="Passport Number:")
+        self.ID_num_label = Label(window, text="Number: ")
         self.ID_num_label.grid(column=col, row=row+5, sticky=E, padx=5, pady=10)
         self.ID_num_var= StringVar(window, value=pass_num)
         self.ID_num_entry = Entry(window, textvariable = self.ID_num_var)
@@ -118,7 +118,7 @@ class UpdateTraveller(Tk):
         self.expiray_date_entry.grid(column=col+1, row=row+7, sticky=W, pady=10)  
 
 
-        self.country_label = Label(window, text="Country:")
+        self.country_label = Label(window, text="Country: ")
         self.country_label.grid(column=col, row=row+8, sticky=E, padx=5, pady=10)
         self.country_var= StringVar(window, value=country)
         self.country_entry = Entry(window, textvariable= self.country_var )

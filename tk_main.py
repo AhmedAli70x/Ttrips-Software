@@ -1,3 +1,4 @@
+from cProfile import label
 from cgitb import text
 import imp
 from msilib.schema import ComboBox
@@ -5,6 +6,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 import traceback
+from invoice import Invoice
 from tk_update_traveller import UpdateTraveller
 from tk_view_trip_legs import ViewTripLegs
 
@@ -14,7 +16,11 @@ from tk_view_travellers import ViewTravellers
 from tk_create_trip_leg import CreateTripLeg
 from tk_update_trip import UpdateTrip
 from tk_take_payment import TakePaymentGUI
+from trip_total_payment import TripTotalGUI
+from tk_update_user import UpdateUser
+from tk_update_invoice import UpdateInvoice
 from users import * 
+from validation import Validation as v
 
 class MainMenu(Tk):
     def __init__(self, system):
@@ -34,14 +40,26 @@ class MainMenu(Tk):
         self.create_trip = Frame(self.menu, width=700, height=500,  )
         self.view_trips = Frame(self.menu, width=700, height=500, bg='white')
         self.create_user = Frame(self.menu, width=700, height=500, bg='white')
+        self.view_coodinators = Frame(self.menu, width=700, height=500, bg='white')
+        self.view_managers = Frame(self.menu, width=700, height=500, bg='white')
+        self.view_invoices = Frame(self.menu, width=700, height=500)
+        self.view_total_invoices = Frame(self.menu, width=700, height=500, bg='white')
 
         self.create_trip.pack(fill="both", expand=1)
         self.view_trips.pack(fill="both", expand=1)
         self.create_user.pack(fill="both", expand=1)
+        self.view_coodinators.pack(fill="both", expand=1)
+        self.view_managers.pack(fill="both", expand=1)
+        self.view_invoices.pack(fill="both", expand=1)
+        self.view_total_invoices.pack(fill="both", expand=1)
 
         self.menu.add(self.create_trip, text="Create Trip")
         self.menu.add(self.view_trips, text="View Trip")
         self.menu.add(self.create_user, text="Create User")
+        self.menu.add(self.view_coodinators, text="View Coodinators")
+        self.menu.add(self.view_managers, text="View Managers")
+        self.menu.add(self.view_invoices, text="View Invoices")
+        self.menu.add(self.view_total_invoices, text="View Total Invoices")
 
         col =0
         row =1
@@ -51,10 +69,13 @@ class MainMenu(Tk):
                 name = self.name_entry.get()
                 date = self.date_entry.get()
                 dur = self.dur_entry.get()
-                # print(dur)
-                new_trip = Trip(name, date, duration=dur)
-                self.system.trips.append(new_trip)
-                messagebox.showinfo(title="Success", message="Trip Created Successfully",)
+
+                check_trip = v.check_trip(name, date)
+                if check_trip:
+                    new_trip = Trip(name, date, duration=dur)
+                    self.system.trips.append(new_trip)
+                    messagebox.showinfo(title="Success", message="Trip Created Successfully",)
+
             except ZeroDivisionError:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Fail to create new trip",)
@@ -112,7 +133,7 @@ class MainMenu(Tk):
 
         
         def update_trip(id):
-            update_trip = UpdateTrip(self.system.trips[id])
+            update_trip = UpdateTrip(self.system, self.system.trips[id])
             update_trip.mainloop()
 
         def take_payment(trip):
@@ -120,7 +141,7 @@ class MainMenu(Tk):
             take_payment.mainloop()
 
         def gen_trip_invoice(trip):
-            trip_total = TripTotalGUI(self.system. trip)
+            trip_total = TripTotalGUI(self.system, trip)
             trip_total.mainloop()
 
         self.name_view = Label(self.view_trips, text="Name")
@@ -177,24 +198,29 @@ class MainMenu(Tk):
                     total_invoice_btn = Button(self.view_trips, command=lambda: gen_trip_invoice(trip) ,text='Tot Trip Invoice', bg = 'black', fg='white')
                     total_invoice_btn.grid(column=col+10, row=row+2+i, sticky=W, padx=5, pady=10)
 
+        self.menu.bind('<<NotebookTabChanged>>', view_trips, add='+')
 
 
         def create_user():
-            username = self.username_entry.get()
-            # password = self.password_entry.get()
-            user_name = self.password_entry.get()
-            phone = self.phone_entry.get()
-            role = self.role_entry.get()
-            print(f"Create New User ")
-            if role == "Coodinator":
-                new_user = Coodinator(username, user_name, phone)
-            elif role == "Manager":
-                new_user = Manager(username,user_name,  phone)
-            elif role == "Administrator":
-                new_user = Administrator(username,user_name,  phone)
-            self.system.users.append(new_user)
-            messagebox.showinfo( title="Success", message=f"User Created Successfully")
-        
+            try:
+                    
+                username = self.username_entry.get()
+                user_name = self.user_name_entry.get()
+                phone = self.phone_entry.get()
+                role = self.role_entry.get()
+                print(f"Create New User ")
+                if role == "c":
+                    new_user = Coodinator(username, user_name, phone)
+                elif role == "m":
+                    new_user = Manager(username,user_name,  phone)
+                elif role == "a":
+                    new_user = Administrator(username,user_name,  phone)
+                self.system.users.append(new_user)
+                messagebox.showinfo( title="Success", message=f"User Created Successfully")
+            except ZeroDivisionError:
+                traceback.print_exc()
+                messagebox.showerror(title="Error", message=f"User Create Error")
+
 
         self.username_label = Label(self.create_user, text="Username: ")
         self.username_label.grid(column=col, row=row, sticky=E, padx=5, pady=10)
@@ -214,17 +240,162 @@ class MainMenu(Tk):
 
         self.role_label = Label(self.create_user, text="Role: ")
         self.role_label.grid(column=col, row=row+3, sticky=E, padx=5, pady=10)
-        self.role_entry = ttk.Combobox(self.create_user, values=["Coodinator", "Manager"])
+        self.role_entry = ttk.Combobox(self.create_user, values=["c", "m"])
         self.role_entry.current(0)
         self.role_entry.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
             
         self.create_user_btn = Button(self.create_user, command= create_user ,text= "Save", bg = "#20bebe")
         self.create_user_btn.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10)
 
-        self.menu.bind('<<NotebookTabChanged>>',view_trips)
+        self.username_label = Label(self.view_coodinators, text="Username: ")
+        self.username_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
+   
+           
+        self.user_name_label = Label(self.view_coodinators, text="Name: ")
+        self.user_name_label.grid(column=col+1, row=row+1, sticky=E, padx=5, pady=10)
 
-        # def view_users(event):
-        #     pass
-        # self.menu.bind('<<NotebookTabChanged>>',view_users)
+
+        self.phone_label = Label(self.view_coodinators, text="Phone: ")
+        self.phone_label.grid(column=col+2, row=row+1, sticky=E, padx=5, pady=10)
 
 
+        def update_user(user):
+            update_user = UpdateUser(user)
+            update_user.mainloop()
+
+        def delete_user(user):
+            self.system.users.remove(user)
+            self.destroy()
+            self.__init__(self.system)
+
+        def view_coodinators(event):
+            coo = self.system.coodinators_objects
+            # print(coo)
+            # return
+            for i, user in enumerate(coo):
+                if user.role == 'c':
+                # if user.role:
+                            
+                    username_view_label = Label(self.view_coodinators, text=user.username)
+                    username_view_label.grid(column=col, row=row+2+i, sticky=W, padx=5, pady=10)  
+
+                    user_name_view_entry = Label(self.view_coodinators, text=user.name)
+                    user_name_view_entry.grid(column=col+1, row=row+2+i, sticky=W, padx=5, pady=10) 
+                    
+                    phone_entry = Label(self.view_coodinators, text=user.phone)
+                    phone_entry.grid(column=col+2, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+
+                    coo_update = Button(self.view_coodinators,  text="Update", command=lambda: update_user(user), bg="yellow")
+                    coo_update.grid(column=col+3, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                    coo_del = Button(self.view_coodinators,  text="Delete", command=lambda: delete_user(user), bg="red")
+                    coo_del.grid(column=col+4, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+        self.menu.bind('<<NotebookTabChanged>>', view_coodinators,  add='+')
+
+
+
+        self.inv_username_label = Label(self.view_invoices, text="User Name: ")
+        self.inv_username_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)
+        
+        self.date_label = Label(self.view_invoices, text="Date: ")
+        self.date_label.grid(column=col+1, row=row+1, sticky=E, padx=5, pady=10)
+
+        self.trip_name_label = Label(self.view_invoices, text="Trip Name: ")
+        self.trip_name_label.grid(column=col+2, row=row+1, sticky=E, padx=5, pady=10)
+  
+
+        self.amount_label = Label(self.view_invoices, text="Amount: ")
+        self.amount_label.grid(column=col+3, row=row+1, sticky=E, padx=5, pady=10)
+
+
+        self.traveller_label = Label(self.view_invoices, text="Traveller: ")
+        self.traveller_label.grid(column=col+4, row=row+1, sticky=E, padx=5, pady=10)
+
+
+        def update_invoice(invoice):
+            update_invoice =  UpdateInvoice(invoice)
+            update_invoice.mainloop()
+
+        def delete_invoice(invoic):
+            self.system.invoices.remove(invoic)
+            self.destroy()
+            self.__init__(self.system)
+
+        def print_invoice(invoic):
+            print(' Generating Invoice.....:')
+            print(' Invoice Details:')
+            print(' Invoice Number:', invoic.number)
+            print(' Invoice Trip:', invoic.trip)
+            print(' Invoice Amount:',invoic.amount)
+            print(' Invoice Username:', invoic.username)
+            print(' Invoice Traveller:', invoic.traveller_name)
+            print(" Invoice Date:", invoic.date)
+        
+        def print_repceipt(invoic):            
+            print(' Generating Receipt.....:')
+            print(' Receipt Details:')
+            print(' Trip:', invoic.trip)
+            print(' Amount:', invoic.amount)
+            print(' Traveller:', invoic.traveller_name)
+            print(" Date: ", invoic.date)
+
+
+        def view_invoices(event):
+
+            for i, invoice in enumerate(self.system.invoices):
+                # print(invoice)
+            
+                inv_username_var= StringVar(self.view_invoices, value= invoice.username )
+                inv_username_entry = Label(self.view_invoices, textvariable = inv_username_var, bg="white")
+                inv_username_entry.grid(column=col, row=row+2+i, sticky=W, padx=5, pady=10)
+
+                date_var= StringVar(self.view_invoices, value= invoice.date)
+                date_entry = Label(self.view_invoices, textvariable = date_var , bg="white")
+                date_entry.grid(column=col+1, row=row+2+i, sticky=W, padx=5, pady=10)  
+
+                trip_name_var= StringVar(self.view_invoices, value= invoice.trip)
+                trip_name_entry = Label(self.view_invoices, textvariable = trip_name_var , bg="white")
+                trip_name_entry.grid(column=col+2, row=row+2+i, sticky=W, padx=5, pady=10)
+
+                amount_var= StringVar(self.view_invoices, value= invoice.amount)
+                amount_entry = Label(self.view_invoices, textvariable = amount_var)
+                amount_entry.grid(column=col+3, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                traveller_var= StringVar(self.view_invoices, value= invoice.traveller_name)
+                traveller_entry = Label(self.view_invoices, textvariable = traveller_var)
+                traveller_entry.grid(column=col+4, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                
+
+                inv_update = Button(self.view_invoices,  text="Update", command=lambda: update_invoice(invoice), bg="yellow")
+                inv_update.grid(column=col+5, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                inv_del = Button(self.view_invoices,  text="Delete", command=lambda: delete_invoice(invoice), bg="red")
+                inv_del.grid(column=col+6, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                inv_del = Button(self.view_invoices,  text="Print Invoice", command=lambda: print_invoice(invoice), bg="cyan")
+                inv_del.grid(column=col+7, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+                inv_del = Button(self.view_invoices,  text="Print Receipt", command=lambda: print_repceipt(invoice), bg="blue", fg='white')
+                inv_del.grid(column=col+8, row=row+2+i, sticky=W, padx=5, pady=10) 
+
+
+
+        self.menu.bind('<<NotebookTabChanged>>', view_invoices,  add='+')
+
+
+        def total_trips_invoices(event):
+            self.view_total_invoices.grid_forget()
+           
+            total_trips_payments = Label(self.view_total_invoices, text="Total Trips Invoices and Payment",bg='cyan', font=("Arial", 16))
+            total_trips_payments.grid(column=col, row=row, sticky=W, padx=5, pady=10) 
+
+            total_trips_val= StringVar(self.view_total_invoices, value= system.total_invoices)
+            total_trips_entry = Label(self.view_total_invoices, textvariable = total_trips_val, bg='cyan', font=("Arial", 16))
+            total_trips_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10) 
+           
+
+
+        self.menu.bind('<<NotebookTabChanged>>', total_trips_invoices,  add='+')
