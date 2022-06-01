@@ -18,6 +18,8 @@ class TestSystem(unittest.TestCase):
         self.assertEqual(trip1.duration, "one_day")
         self.assertEqual(trip1.support_staff_num, 0)
 
+        #support staff number depends on the number of travellers
+        #Test adding 10 traveller, then the support staff number will be updated to one
         trip1.travellers = [i for i in range(10)]
         self.assertEqual(trip1.support_staff_num, 1)
 
@@ -45,10 +47,12 @@ class TestSystem(unittest.TestCase):
         self.assertTrue(del_trveller)
         # trip2.view_traverllers()
 
+        #Try adding support staff whil the support staff number is 0 will retrun False
         self.assertEqual(trip2.support_staff_num, 0)
         add_support_staff = trip2.add_support_staff("Hassan")
         self.assertFalse(add_support_staff)
 
+        #Take Payment and test total invoice for a trip
         trip2.take_payment(10)
         trip2.take_payment(20)
         trip2.take_payment(30)
@@ -66,8 +70,6 @@ class TestSystem(unittest.TestCase):
         print(trip_leg1.transport_mode)
 
 
-
-
     
     def TestTraveller(self):
 
@@ -78,7 +80,7 @@ class TestSystem(unittest.TestCase):
         self.assertTrue(traveller1.birth_date in  "25/05/2002")
         self.assertTrue(traveller1.emr_contact in  "999999")
 
-        add_pass = traveller1.add_id('Passport', '55555', 'Jack Lio', '25/07/2023', 'Germany')
+        add_pass = traveller1.add_id('passport', '55555', 'Jack Lio', '25/07/2023', 'Germany')
         self.assertFalse(add_pass)
 
 
@@ -122,6 +124,8 @@ class TestSystem(unittest.TestCase):
         system.users.append(man1)
         system.users.append(man2)
         trip1.trip_coodinator = coo1
+
+        #Take Payments and test calculating total invoice for all trips in the system
         trip1.take_payment(10)
         trip1.take_payment(20)
         trip1.take_payment(10)

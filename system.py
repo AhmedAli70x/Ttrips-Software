@@ -78,7 +78,7 @@ class System:
             all_invoices += trip.payments
         return all_invoices
 
-
+    #return total of all trips in the system (admin method)
     @property
     def total_invoices(self):
         self.total = 0
@@ -113,51 +113,34 @@ class System:
         self.__init__()
 
 
-system = System()
-
-
-trip1 = Trip("Trip1",'10/06/2021')
-trip1.create_traveller("traveller1", "address1",'22/10/99','4447140')
-trip1.travellers[0].create_id('passport1','123', 'Jacob Jack2', "25/07/2024", "Chzech")
-system.trips.append(trip1)
-
-admin = Administrator('admin', "Luise Diase", '123')
-coo1 = Coodinator('coo', "Manie Mark", '123')
-trip1.trip_coodinator = coo1
-
-cood2 = Coodinator('coo2', "Luka James", '999')
-
-man1 = Manager('man1', "Jacob Adam", '111')
-man2 = Manager('man2', "Sara Henry", '222')
-
-admin = Administrator('admin', "Luise Diase", '123')
-system.users.append(admin)
-system.users.append(coo1)
-system.users.append(cood2)
-system.users.append(man1)
-system.users.append(man2)
-trip1.trip_coodinator = coo1
-trip1.take_payment(10)
-trip1.take_payment(20)
-trip1.take_payment(10)
-# print(trip1.coodinator)
-# print(trip1.contact)
-# print(system.system_managers)
-# print(trip1.total_invoice)
-trip2 = Trip("Trip2", "22/06/1994", "2222", duration="one day")
-system.trips.append(trip2)
-trip2.take_payment(20)
-
-# print(system.total_invoices)
-# print(system.invoices)
-
-
-# system.login('admin', "123")
-
-# main_gui = MainMenu(system)
-# main_gui.mainloop()
-
 if __name__ == "__main__":
+    
+    system = System()
+    trip1 = Trip("Trip1",'10/06/2021')
+    trip1.create_traveller("traveller1", "address1",'22/10/99','4447140')
+    trip1.travellers[0].create_id('passport1','123', 'Jacob Jack2', "25/07/2024", "Chzech")
+    system.trips.append(trip1)
+
+    admin = Administrator('admin', "Luise Diase", '123')
+    coo1 = Coodinator('coo', "Manie Mark", '123')
+    trip1.trip_coodinator = coo1
+
+    cood2 = Coodinator('coo2', "Luka James", '999')
+
+    man1 = Manager('man1', "Jacob Adam", '111')
+    man2 = Manager('man2', "Sara Henry", '222')
+
+    admin = Administrator('admin', "Luise Diase", '123')
+    system.users.append(admin)
+    system.users.append(coo1)
+    system.users.append(cood2)
+    system.users.append(man1)
+    system.users.append(man2)
+    trip1.trip_coodinator = coo1
+    trip1.take_payment(10)
+    trip1.take_payment(20)
+    trip1.take_payment(10)
+
         
     login_gui = LoginGUI(system)
     login_gui.mainloop()

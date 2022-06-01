@@ -14,7 +14,7 @@ class LoginGUI(Tk):
         super().__init__()
         self.system = system
         self.title("Login")
-        self.geometry("300x300")
+        self.geometry("500x400")
         self.resizable(10, 10)
 
         self.columnconfigure(0, weight= 2)
@@ -31,6 +31,8 @@ class LoginGUI(Tk):
         self.username_var= StringVar()
         self.username_entry = Entry(self, textvariable = self.username_var)
         self.username_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10) 
+
+
 
 
         def login():
@@ -53,7 +55,13 @@ class LoginGUI(Tk):
 
   
         self.save_tra_btn = Button(self, command= login ,text="Login", bg = "#20bebe")
-        self.save_tra_btn.grid(column=col+1, row=row+6, sticky=W, padx=5, pady=10)  
+        self.save_tra_btn.grid(column=col+1, row=row+2, sticky=W, padx=5, pady=10)
+
+
+        
+        self.guid = Label(self, text="Enter:\n 'admin' or,\n 'man1',\n 'coo'")
+        self.guid.grid(column=col+1, row=row+3, sticky=W, padx=5, pady=10)  
+        
 
  
 
