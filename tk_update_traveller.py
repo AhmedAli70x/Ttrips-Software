@@ -13,12 +13,12 @@ class UpdateTraveller(Tk):
         self.traveller  = traveller 
 
 
-        self.title("View Travellers")
-        self.geometry("700x800")
-        self.configure(bg='white')
+        self.title("Update Travelles")
+        self.geometry("500x600")
+  
         self.wait_visibility()
 
-        window = Frame(self, width=700, height=600, bg='white' )
+        window = Frame(self, width=700, height=600, )
         window.grid(column=0,row=0,padx=5, pady=10) 
 
 
@@ -38,19 +38,19 @@ class UpdateTraveller(Tk):
                 full_name = self.full_name_entry.get()
                 expiry_date = self.expiray_date_entry.get()
                 country = self.country_entry.get()
-
+                #validate trip lege entries befor updating
                 checK_traveller = v.check_traveller(name, address, birth_date, emr_contact, ID_num, full_name, expiry_date, country)
                 if checK_traveller:
-                    self.traveller.name = self.name_entry.get()
-                    self.traveller.address = self.address_entry.get()
-                    self.traveller.birth_date = self.birth_date_entry.get()
-                    self.traveller.emr_contact = self.ID_entry.get()
+                    self.traveller.name = name
+                    self.traveller.address = address
+                    self.traveller.birth_date = birth_date
+                    self.traveller.emr_contact = emr_contact
 
-                    self.traveller.gov_ids[0].id_type = self.ID_entry.get()
-                    self.traveller.gov_ids[0].number = self.ID_num_entry.get()
-                    self.traveller.gov_ids[0].fullname = self.full_name_entry.get()
-                    self.traveller.gov_ids[0].expiry_date = self.expiray_date_entry.get()
-                    self.traveller.gov_ids[0].country = self.country_entry.get()
+                    self.traveller.gov_ids[0].id_type = ID_type
+                    self.traveller.gov_ids[0].number =ID_num
+                    self.traveller.gov_ids[0].fullname = full_name
+                    self.traveller.gov_ids[0].expiry_date = expiry_date
+                    self.traveller.gov_ids[0].country = country
                     self.destroy()
                     messagebox.showinfo( title="Success", message=f"Traveller {self.traveller.name} Updated Successfully")
                     # print(f"Traveller {self.traveller.name} Updated Successfully")

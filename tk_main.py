@@ -76,7 +76,7 @@ class MainMenu(Tk):
                     self.system.trips.append(new_trip)
                     messagebox.showinfo(title="Success", message="Trip Created Successfully",)
 
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Fail to create new trip",)
 
@@ -119,6 +119,7 @@ class MainMenu(Tk):
         def create_trip_leg(id):
             trip_tip_leg = self.system.trips[id].trip_legs
             create_trip_leg  = CreateTripLeg(trip_tip_leg)
+            create_trip_leg.mainloop()
 
         
         def view_trip_legs(id):
@@ -208,16 +209,18 @@ class MainMenu(Tk):
                 user_name = self.user_name_entry.get()
                 phone = self.phone_entry.get()
                 role = self.role_entry.get()
-                print(f"Create New User ")
-                if role == "c":
-                    new_user = Coodinator(username, user_name, phone)
-                elif role == "m":
-                    new_user = Manager(username,user_name,  phone)
-                elif role == "a":
-                    new_user = Administrator(username,user_name,  phone)
-                self.system.users.append(new_user)
-                messagebox.showinfo( title="Success", message=f"User Created Successfully")
-            except ZeroDivisionError:
+                #Validate user entries
+                check_user = v.check_user(username, user_name, phone)
+                if check_user:
+                    if role == "c":
+                        new_user = Coodinator(username, user_name, phone)
+                    elif role == "m":
+                        new_user = Manager(username,user_name,  phone)
+                    elif role == "a":
+                        new_user = Administrator(username,user_name,  phone)
+                    self.system.users.append(new_user)
+                    messagebox.showinfo( title="Success", message=f"User Created Successfully")
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message=f"User Create Error")
 
@@ -324,6 +327,7 @@ class MainMenu(Tk):
             self.__init__(self.system)
 
         def print_invoice(invoic):
+            print()
             print(' Generating Invoice.....:')
             print(' Invoice Details:')
             print(' Invoice Number:', invoic.number)
@@ -332,15 +336,17 @@ class MainMenu(Tk):
             print(' Invoice Username:', invoic.username)
             print(' Invoice Traveller:', invoic.traveller_name)
             print(" Invoice Date:", invoic.date)
+            print()
         
-        def print_repceipt(invoic):            
+        def print_repceipt(invoic):     
+            print()       
             print(' Generating Receipt.....:')
             print(' Receipt Details:')
             print(' Trip:', invoic.trip)
             print(' Amount:', invoic.amount)
             print(' Traveller:', invoic.traveller_name)
             print(" Date: ", invoic.date)
-
+            print()
 
         def view_invoices(event):
 
@@ -390,11 +396,11 @@ class MainMenu(Tk):
             self.view_total_invoices.grid_forget()
            
             total_trips_payments = Label(self.view_total_invoices, text="Total Trips Invoices and Payment",bg='cyan', font=("Arial", 16))
-            total_trips_payments.grid(column=col, row=row, sticky=W, padx=5, pady=10) 
+            total_trips_payments.grid(column=col, row=row, sticky=E, padx=(300, 5), pady=190) 
 
             total_trips_val= StringVar(self.view_total_invoices, value= system.total_invoices)
             total_trips_entry = Label(self.view_total_invoices, textvariable = total_trips_val, bg='cyan', font=("Arial", 16))
-            total_trips_entry.grid(column=col+1, row=row, sticky=W, padx=5, pady=10) 
+            total_trips_entry.grid(column=col+1, row=row, sticky=W, padx=(5, 300), pady=190) 
            
 
 

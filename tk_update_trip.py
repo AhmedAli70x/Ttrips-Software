@@ -47,7 +47,7 @@ class UpdateTrip(Tk):
 
                 messagebox.showinfo(title="Success", message="Trip Update Successfully",)
                 self.destroy()
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Fail to Update trip",)
 

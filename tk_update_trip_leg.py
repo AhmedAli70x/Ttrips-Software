@@ -6,6 +6,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import traceback
 from trips import Trip, Traveller
+from validation import Validation as v
 
 
 class UpdateTripLeg(Tk):
@@ -14,7 +15,7 @@ class UpdateTripLeg(Tk):
         super().__init__()
         self.trip_leg  = trip_leg 
         self.title("Update Trip Leg")
-        self.geometry("500x500")
+        self.geometry("500x600")
         self.configure(bg='white')
         self.wait_visibility()
 
@@ -28,17 +29,23 @@ class UpdateTripLeg(Tk):
 
         def update_trip_leg():
             try:
-                self.trip_leg.starting_location = self.strat_location_entry.get()
-                self.trip_leg.destination = self.destination_entry.get()
-                self.trip_leg.point_of_interest = self.interest_points_entry.get()
-                self.trip_leg.transport_provider = self.transport_entry.get()
-                # print("Trans mode is", self.transport_mode_entry.get())
-                self.trip_leg.transport_mode = self.transport_mode_entry.get()
-                self.destroy()
-                messagebox.showinfo( title="Success", message=f"Trip Leg Updated Successfully")
-                # print(f"Traveller  Updated Successfully")
+                start_location = self.strat_location_entry.get()
+                destination = self.destination_entry.get()
+                interest_point = self.interest_points_entry.get()
+                transport_provider = self.transport_entry.get()
+                transport_mode = self.transport_mode_entry.get()
+
+                check_trip_leg = v.check_trip_leg(start_location, destination, interest_point, transport_provider)
+                if check_trip_leg:
+                    self.trip_leg.starting_location = start_location
+                    self.trip_leg.destination = destination
+                    self.trip_leg.point_of_interest = interest_point
+                    self.trip_leg.transport_provider = transport_provider
+                    self.trip_leg.transport_mode = transport_mode
+                    self.destroy()
+                    messagebox.showinfo( title="Success", message=f"Trip Leg Updated Successfully")
                 
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror( title="Error", message=f"Failed to update Trip Leg ")
 

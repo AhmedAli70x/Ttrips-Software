@@ -100,7 +100,7 @@ class CreateTraveller(Tk):
 
                     self.destroy()
 
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Failed to create traveller")
     

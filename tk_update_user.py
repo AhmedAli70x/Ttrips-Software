@@ -7,6 +7,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import traceback
 from trips import Trip, Traveller
+from validation import Validation as v
 
 
 class UpdateUser(Tk):
@@ -24,55 +25,34 @@ class UpdateUser(Tk):
 
         self.update_traveller_label = Label(self, text=f"Update User ", bg="#20bebe")
         self.update_traveller_label.grid( column= 1 , row=0, sticky=W, padx=10, pady=10)
-
-
+        
+  
         def update_user():
-            try:
-                self.trip_leg.starting_location = self.strat_location_entry.get()
-                self.trip_leg.destination = self.destination_entry.get()
-                self.trip_leg.point_of_interest = self.interest_points_entry.get()
-                self.trip_leg.transport_provider = self.transport_entry.get()
-                print("Trans mode is", self.transport_mode_entry.get())
-                self.trip_leg.transport_mode = self.transport_mode_entry.get()
-                self.destroy()
-                messagebox.showinfo( title="Success", message=f"Trip Leg Updated Successfully")
-                # print(f"Traveller  Updated Successfully")
-                
-            except ZeroDivisionError:
-                traceback.print_exc()
-                messagebox.showerror( title="Error", message=f"Failed to update Trip Leg ")
+            try:   
+                username = username_entry.get()
+                user_name =user_name_entry.get()
+                phone = phone_entry.get()
+                role = role_entry.get()
 
-    
+                #Validate user entries
+                check_user = v.check_user(username, user_name, phone)
+                if check_user:
+                    self.user.username = username
+                    self.user.name = user_name
+                    self.user.phone = phone 
+                    self.user.role = role
+                    self.destroy()
+                    messagebox.showinfo( title="Success", message=f"User Updated Successfully")
+            except Exception:
+                traceback.print_exc()
+                messagebox.showerror(title="Error", message=f"User Update Error")
+
 
         form_username = self.user.username
         form_name = self.user.name
         form_phone = self.user.phone
         form_role = self.user.role
    
-        
-  
-        def update_user():
-            try:
-                    
-                username = username_entry.get()
-                user_name =user_name_entry.get()
-                phone = phone_entry.get()
-                role = role_entry.get()
-
-
-                self.user.username = username
-                self.user.name = user_name
-                self.user.phone = phone
-                
-                self.user.role = role
-                print(self.user.role)
-
-                self.destroy()
-                messagebox.showinfo( title="Success", message=f"User Updated Successfully")
-            except ZeroDivisionError:
-                traceback.print_exc()
-                messagebox.showerror(title="Error", message=f"User Update Error")
-
         
         col =0
         row = 1

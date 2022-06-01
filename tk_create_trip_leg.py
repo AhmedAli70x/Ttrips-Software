@@ -5,6 +5,7 @@ import traceback
 from tkinter import ttk
 from trips import  TripLeg
 
+from validation import Validation as v
 
 class CreateTripLeg(Tk):
 
@@ -57,15 +58,18 @@ class CreateTripLeg(Tk):
             try:
                 start_location = self.strat_location_entry.get()
                 destination = self.destination_entry.get()
-                interest_points = self.interest_points_entry.get()
+                interest_point = self.interest_points_entry.get()
                 transport_provider = self.transport_entry.get()
                 transport_mode = self.transport_mode_entry.get()
+                #Trip leg Validation
+                check_trip_leg = v.check_trip_leg(start_location, destination, interest_point, transport_provider)
+                if check_trip_leg:
+                    new_trip_leg = TripLeg(start_location, destination, interest_point, transport_provider, transport_mode)
+                    self.trip_legs.append(new_trip_leg)
+                    messagebox.showinfo(title="Success", message="Trip Leg created successfully")       
+                    self.destroy()
 
-                new_trip_leg = TripLeg(start_location, destination, interest_points, transport_provider, transport_mode)
-                self.trip_legs.append(new_trip_leg)
-                messagebox.showinfo(title="Success", message="Trip Leg created successfully")       
-                self.destroy()
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showerror(title="Error", message="Failed to create traveller")
                 self.system.refresh()

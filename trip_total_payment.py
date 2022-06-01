@@ -37,7 +37,7 @@ class TripTotalGUI(Tk):
                 self.destroy()
                 messagebox.showinfo(title="Success", message="Payment received",)
 
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showinfo(title="Fail", message="Process fail",)
 

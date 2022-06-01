@@ -7,6 +7,8 @@ from tkinter import messagebox
 import traceback
 from invoice import Invoice
 
+from validation import Validation as v
+
 class TakePaymentGUI(Tk):
 
     def __init__(self, system, trip):
@@ -27,36 +29,33 @@ class TakePaymentGUI(Tk):
         def save_invoice():
             try:
                 try:
-                    amount = float(self.amount_entry.get())                
+                    amount = self.amount_entry.get()                
                     trip_name = self.trip_name_var.get()
                     cur_user_name = self.username_var.get()
                     traveller = self.traveller_entry.get()
                     date = self.date_var.get()
 
-                    self.trip.take_payment(amount, trip_name, cur_user_name, traveller, date)
-
-                    print()
-                    print(' Generating Receipt.....:')
-                    print(' Receipt Details:')
-                    print(' Trip:', trip_name)
-                    print(' Amount:', amount)
-                    print(' Traveller:', traveller)
-                    print(" Date: ", date)
-                    print()
-
-
-                    self.destroy()
-                    messagebox.showinfo(title="Success", message="Payment received")
+                    check_invoice = v.check_invoice(amount, traveller)
+                    if check_invoice:
+                        self.trip.take_payment(float(amount), trip_name, cur_user_name, traveller, date)
+                        print()
+                        print(' Generating Receipt.....:')
+                        print(' Receipt Details:')
+                        print(' Trip:', trip_name)
+                        print(' Amount:', amount)
+                        print(' Traveller:', traveller)
+                        print(" Date: ", date)
+                        print()
+                        self.destroy()
+                        messagebox.showinfo(title="Success", message="Payment received")
 
                 except ValueError:
                     messagebox.showerror(title="Error", message="Please Enter a valid number",)
 
-
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showinfo(title="Fail", message="Process fail",)
 
-            
 
         col = 0
         row = 1

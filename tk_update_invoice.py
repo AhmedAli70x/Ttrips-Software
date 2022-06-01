@@ -6,6 +6,8 @@ from tkinter import ttk
 from tkinter import messagebox
 import traceback
 from invoice import Invoice
+from validation import Validation as v
+
 
 class UpdateInvoice(Tk):
 
@@ -26,27 +28,28 @@ class UpdateInvoice(Tk):
         def update_invoice():
             try:
                 try:
-                    amount = float(self.amount_entry.get())                
+                    amount = self.amount_entry.get()               
                     trip_name = self.trip_name_var.get()
                     user_name = self.username_var.get()
                     traveller = self.traveller_entry.get()
                     date = self.date_var.get()
 
-                    self.invoice.name = user_name
-                    self.invoice.date = date
-                    self.invoice.trip = trip_name
-                    self.invoice.amount = amount
-                    self.invoice.traveller_name = traveller
+                    check_invoice = v.check_invoice(amount, traveller)
+                    if check_invoice:
 
-
-                    self.destroy()
-                    messagebox.showinfo(title="Success", message="Invoice Updated")
+                        self.invoice.name = user_name
+                        self.invoice.date = date
+                        self.invoice.trip = trip_name
+                        self.invoice.amount = float(amount)
+                        self.invoice.traveller_name = traveller
+                        self.destroy()
+                        messagebox.showinfo(title="Success", message="Invoice Updated")
 
                 except ValueError:
                     messagebox.showerror(title="Error", message="Please enter a valid amount",)
 
 
-            except ZeroDivisionError:
+            except Exception:
                 traceback.print_exc()
                 messagebox.showinfo(title="Fail", message="Process fail",)
 
