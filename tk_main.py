@@ -26,12 +26,12 @@ class MainMenu(Tk):
     def __init__(self, system):
         super().__init__()
         self.system = system
-        self.title("Trips")
+        self.title("Trips System (Administrator)")
         self.geometry("1000x500")
         self.resizable(0, 0)
 
 
-        self.head_label = Label(self, text="Trip System", bg="#20bebe")
+        self.head_label = Label(self, text="Trips System (Administrator)", bg="#20bebe")
         self.head_label.grid( column= 0 , row=0, sticky=W, padx=10, pady=10)
 
         self.menu = ttk.Notebook(self)
@@ -56,8 +56,10 @@ class MainMenu(Tk):
         self.menu.add(self.create_trip, text="Create Trip")
         self.menu.add(self.view_trips, text="View Trip")
         self.menu.add(self.create_user, text="Create User")
-        self.menu.add(self.view_coodinators, text="View Coodinators")
+        self.menu.add(self.view_coodinators, text="View Coodinators & Managers")
         self.menu.add(self.view_managers, text="View Managers")
+        self.menu.forget(self.view_managers)
+
         self.menu.add(self.view_invoices, text="View Invoices")
         self.menu.add(self.view_total_invoices, text="View Total Invoices")
 
@@ -249,6 +251,10 @@ class MainMenu(Tk):
             
         self.create_user_btn = Button(self.create_user, command= create_user ,text= "Save", bg = "#20bebe")
         self.create_user_btn.grid(column=col+1, row=row+4, sticky=W, padx=5, pady=10)
+
+
+
+        # View coodinators
 
         self.username_label = Label(self.view_coodinators, text="Username: ")
         self.username_label.grid(column=col, row=row+1, sticky=E, padx=5, pady=10)

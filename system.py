@@ -112,22 +112,23 @@ class System:
         self.destroy()
         self.__init__()
 
+
+system = System()
+
+
 trip1 = Trip("Trip1",'10/06/2021')
 trip1.create_traveller("traveller1", "address1",'22/10/99','4447140')
 trip1.travellers[0].create_id('passport1','123', 'Jacob Jack2', "25/07/2024", "Chzech")
-
-trip1.create_traveller("traveller2", "address1",'22/10/99','4447140')
-trip1.travellers[0].create_id('passport2','123', 'Jacob Jack2', "25/07/2024", "Chzech")
-system = System()
 system.trips.append(trip1)
+
 admin = Administrator('admin', "Luise Diase", '123')
 coo1 = Coodinator('coo', "Manie Mark", '123')
 trip1.trip_coodinator = coo1
 
 cood2 = Coodinator('coo2', "Luka James", '999')
 
-man1 = Manager('man1', "Jacob Adam", '123')
-man2 = Manager('man2', "Sara Henry", '123')
+man1 = Manager('man1', "Jacob Adam", '111')
+man2 = Manager('man2', "Sara Henry", '222')
 
 admin = Administrator('admin', "Luise Diase", '123')
 system.users.append(admin)

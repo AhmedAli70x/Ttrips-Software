@@ -8,7 +8,7 @@ class Validation:
     def check_trip(name, date ):
         msg = ''
         if len(name)< 5:
-            msg += 'Trip name min legth is 5 \n'
+            msg += 'Trip name min length is 5 \n'
         if not date:
             msg += 'Date is required \n'
 
@@ -22,8 +22,8 @@ class Validation:
     @staticmethod
     def check_traveller(name, address, birth_date, emr_contact, ID_num, full_name, expiry_date, country ):
         msg = ''
-        if len(name)< 5:
-            msg += 'Traveller name min legth is 5 \n'
+        if len(name)< 3:
+            msg += 'Traveller name min legth is 3 \n'
         if not address:
             msg += 'Address min legth is 5  \n'
         if not birth_date:
@@ -56,13 +56,13 @@ class Validation:
     def check_trip_leg(start_location, destination, interest_point, transport_provider):
         msg = ''
         if len(start_location)< 5:
-            msg += 'Start Location min legth is 5 \n'
+            msg += 'Start Location min length is 5 \n'
         if len(destination)< 5:
-            msg += 'Destination min legth is 5 \n'
+            msg += 'Destination min length is 5 \n'
         if len(interest_point)< 6:
-            msg += 'Interest Point min legth is 6  \n'
+            msg += 'Interest Point min length is 6  \n'
         if len(transport_provider)< 4:
-            msg += 'Transport Provider min legth is 4  \n'
+            msg += 'Transport Provider min length is 4  \n'
 
         if msg:
             messagebox.showinfo(title="Error", message=msg)
@@ -75,8 +75,8 @@ class Validation:
     def check_user(username,user_name,  phone):
         msg = ''
 
-        if len(username)< 5:
-            msg += 'Username min legth is 5 \n'
+        if len(username)< 3:
+            msg += 'Username min length is 3 \n'
         if len(user_name)< 3:
             msg += 'Name  minlegth is 3 \n'
         if not phone.strip().isdigit():
@@ -97,7 +97,7 @@ class Validation:
         if not amount.strip().isdigit():
             msg += 'Enter valid amount \n'
         if len(traveller)< 3:
-            msg += 'Traveller min legth is 3 \n'
+            msg += 'Traveller min length is 3 \n'
 
         if msg:
             messagebox.showinfo(title="Error", message=msg)

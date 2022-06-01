@@ -30,8 +30,7 @@ class ManagerMenu(Tk):
         self.geometry("1000x500")
         self.resizable(0, 0)
 
-
-        self.head_label = Label(self, text="Trips System", bg="#20bebe")
+        self.head_label = Label(self, text="Trips System (Manager)", bg="#20bebe")
         self.head_label.grid( column= 0 , row=0, sticky=W, padx=10, pady=10)
 
         self.menu = ttk.Notebook(self)
@@ -51,7 +50,7 @@ class ManagerMenu(Tk):
 
         self.menu.add(self.create_trip, text="Create Trip")
         self.menu.add(self.view_trips, text="View Trip")
-        self.menu.add(self.create_user, text="Create User")
+        self.menu.add(self.create_user, text="Create Coodinator")
         self.menu.add(self.view_coodinators, text="View Coodinators")
         self.menu.add(self.view_managers, text="View Managers")
         self.menu.forget(self.view_managers)
